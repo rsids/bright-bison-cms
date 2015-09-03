@@ -94,6 +94,6 @@
 	<SolidFill id="solid_light_brown" color="#c0c0c0"/>
 	<SolidFill id="white" color="#ffffff"/>
 	
-	<BitmapFill id="check_bmf" source="@Embed('assets/skins/check.png')" smooth="true" repeatX="none" repeatY="none" />
+	<BitmapFill id="check_bmf" source="@Embed('/assets/skins/check.png')" smooth="true" repeatX="none" repeatY="none" />
 	
 </collections:FillCollection>

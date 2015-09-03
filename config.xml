@@ -43,7 +43,7 @@
         <es>false</es>
         <!-- compiler.external-library-path: list of SWC files or directories to compile against but to omit from linking-->
         <external-library-path>
-            <path-element>${flexlib}/libs/player/10/playerglobal.swc</path-element>
+            <path-element>${flexlib}/libs/player/10.2/playerglobal.swc</path-element>
         </external-library-path>
         <fonts>
             <!-- compiler.fonts.advanced-anti-aliasing: enables advanced anti-aliasing for embedded fonts, which provides greater clarity for small fonts.-->
@@ -105,17 +105,18 @@
         <keep-generated-actionscript>false</keep-generated-actionscript>
         <!-- compiler.library-path: list of SWC files or directories that contain SWC files-->
         <library-path>
-            <path-element>libs</path-element>
             <path-element>${flexlib}/libs/framework.swc</path-element>
             <path-element>${flexlib}/libs/automation.swc</path-element>
             <path-element>${flexlib}/libs/automation_agent.swc</path-element>
             <path-element>${flexlib}/libs/automation_dmv.swc</path-element>
             <path-element>${flexlib}/libs/automation_flashflexkit.swc</path-element>
             <path-element>${flexlib}/libs/datavisualization.swc</path-element>
+            <path-element>${flexlib}/libs/flex.swc</path-element>
             <path-element>${flexlib}/libs/qtp.swc</path-element>
             <path-element>${flexlib}/libs/rpc.swc</path-element>
             <path-element>${flexlib}/libs/utilities.swc</path-element>
             <path-element>${flexlib}/locale/{locale}</path-element>
+            <path-element>libs</path-element>
         </library-path>
         <!-- compiler.locale: specifies the locale for internationalization-->
         <locale>
@@ -161,8 +162,7 @@
            <filename>string</filename>
         </theme>
         -->
-        <!-- compiler.use-resource-bundle-metadata: determines whether resources bundles are included in the application.-->
-        <use-resource-bundle-metadata>false</use-resource-bundle-metadata>
+        <use-resource-bundle-metadata>true</use-resource-bundle-metadata>
         <!-- compiler.verbose-stacktraces: save callstack information to the SWF for debugging-->
         <verbose-stacktraces>false</verbose-stacktraces>
         <!-- compiler.warn-array-tostring-changes: Array.toString() format has changed.-->
@@ -260,21 +260,8 @@
         <width>500</width>
         <height>375</height>
     </default-size>
-    <!-- externs: a list of symbols to omit from linking when building a SWF-->
-    <!-- externs usage:
-    <externs>
-       <symbol>string</symbol>
-       <symbol>string</symbol>
-    </externs>
-    -->
+
     <frames>
-        <!-- frames.frame: A SWF frame label with a sequence of classnames that will be linked onto the frame.-->
-        <!-- frames.frame usage:
-        <frame>
-           <label>string</label>
-           <classname>string</classname>
-        </frame>
-        -->
     </frames>
     <!-- includes: a list of symbols to always link in when building a SWF-->
     <!-- includes usage:
@@ -329,28 +316,11 @@
         <!-- metadata.title: The default title to store in the SWF metadata-->
         <title>Adobe Flex 3 Application</title>
     </metadata>
-    <!-- raw-metadata: XML text to store in the SWF metadata (overrides metadata.* configuration)-->
-    <!-- raw-metadata usage:
-    <raw-metadata>text</raw-metadata>
-    -->
-    <!-- resource-bundle-list: prints a list of resource bundles to a file for input to the compc compiler to create a resource bundle SWC file. -->
-    <!-- resource-bundle-list usage:
-    <resource-bundle-list>filename</resource-bundle-list>
-    -->
-    <!-- runtime-shared-libraries: a list of runtime shared library URLs to be loaded before the application starts-->
-    <!-- runtime-shared-libraries usage:
-    <runtime-shared-libraries>
-       <url>string</url>
-       <url>string</url>
-    </runtime-shared-libraries>
-    -->
-    <!-- runtime-shared-library-path usage:
-    <runtime-shared-library-path>
-       <path-element>string</path-element>
-       <rsl-url>string</rsl-url>
-       <policy-file-url>string</policy-file-url>
-    </runtime-shared-library-path>
-    -->
+
+   <runtime-shared-library-path>
+      <path-element>${flexlib}/framework.swc</path-element>
+      <rsl-url>framework_3.5.0.12683.swf</rsl-url>
+   </runtime-shared-library-path>
     <!-- static-link-runtime-shared-libraries: statically link the libraries specified by the -runtime-shared-libraries-path option.-->
     <static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
     <!-- target-player: specifies the version of the player the application is targeting. Features requiring a later version will not be compiled into the application. The minimum value supported is "9.0.0".-->

@@ -101,8 +101,8 @@ DataGrid {
 }
 
 FlpTree {
-	closedIcon:					Embed(source="../assets/skins/tree_opened_icon.png");
-	openedIcon:					Embed(source="../assets/skins/tree_closed_icon.png");
+	closedIcon:					Embed(source="/assets/skins/tree_opened_icon.png");
+	openedIcon:					Embed(source="/assets/skins/tree_closed_icon.png");
 	padding-left:				5;
 	padding-right:				5;
 	padding-top:				5;
@@ -197,7 +197,7 @@ TextInput.error {
 }
 
 ToolTip {
-	border-skin:				Embed(source="../assets/skins/skins.swf#ToolTip");
+	border-skin:				Embed(source="/assets/skins/skins.swf#ToolTip");
 	font-family:				"arial";
 	color:						#412E03;
 	font-weight:				bold;
