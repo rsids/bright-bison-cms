@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<maps:ListView 
+	styleName="borderedBox"
+	creationComplete="listview_creationCompleteHandler(event)"
+	show="listview_showHandler(event)"
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:maps="nl.bs10.bright.views.maps.*" 
+	width="100%" 
+	height="100%" 
+	xmlns:components="nl.bs10.bright.components.*"
+	xmlns:libcomponents="nl.bs10.brightlib.components.*">
+	<mx:Script>
+		<![CDATA[
+			
+			import nl.bs10.bright.controllers.PermissionController;
+			import nl.bs10.brightlib.controllers.IconController;
+			import nl.bs10.bright.model.Model;
+		]]>
+	</mx:Script>
+	
+	<mx:HBox
+		height="60"
+		styleName="headerBar"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		width="100%">
+		
+		<mx:Label
+			text="Filter:" />
+		
+		<mx:TextInput
+			id="filter_txt"
+			keyUp="filter_txt_keyUpHandler(event)"
+			toolTip="Filter" />
+		
+		<mx:ViewStack
+			selectedIndex="{mode}">
+			<mx:HBox
+				width="100%">
+				<mx:Button
+					visible="{PermissionController.instance._CREATE_PAGE}"
+					includeInLayout="{PermissionController.instance._CREATE_PAGE}"
+					click="newMarker()"
+					toolTip="Add a new marker"
+					label="New Marker" />
+				
+				<mx:Button
+					visible="{PermissionController.instance._CREATE_PAGE}"
+					includeInLayout="{PermissionController.instance._CREATE_PAGE}"
+					enabled="{list_dg.selectedItem}"
+					click="editItem()"
+					toolTip="Edit the selected marker"
+					label="Edit marker" />
+				
+				<mx:Button
+					id="delete_btn"
+					visible="{PermissionController.instance._DELETE_PAGE}"
+					includeInLayout="{PermissionController.instance._DELETE_PAGE}"
+					click="deleteItem()"
+					toolTip="Delete the selected marker"
+					enabled="{list_dg.selectedItem}"
+					label="Delete marker" />
+				
+			</mx:HBox>
+			
+			<mx:HBox
+				width="100%">
+				<mx:Button
+					enabled="{list_dg.selectedItem != null}"
+					click="onSelectMarker()"
+					toolTip="Select Marker"
+					label="Select Marker" />
+				
+			</mx:HBox>
+		</mx:ViewStack>
+		
+		
+	</mx:HBox>
+	
+	
+	
+	<mx:Canvas
+		borderColor="#929292"
+		borderStyle="solid"
+		borderThickness="1"
+		backgroundColor="#ffffff"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		height="100%"
+		width="100%">
+		
+		<mx:Canvas
+			width="100%"
+			top="0"
+			bottom="43">
+			
+			<components:BrightDataGrid
+				settingsname="maps"
+				styleName="noborder"
+				width="100%"
+				height="100%"
+				editItem="editItem()"
+				doubleClickEnabled="true"
+				doubleClick="editItem()"
+				dataProvider="{items}"
+				id="list_dg" />
+		</mx:Canvas>
+		
+		<libcomponents:IconBox 
+			id="grayIconBar"
+			bottom="0">
+			
+			<libcomponents:GrayImageButton 
+				source="{IconController.getGray('cog')}" 
+				toolTip="Edit visible columns" 
+				click="editColumns()" />
+			
+			
+		</libcomponents:IconBox>
+		
+	</mx:Canvas>
+	
+</maps:ListView>

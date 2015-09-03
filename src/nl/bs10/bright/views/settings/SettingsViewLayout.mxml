@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SettingsView 
+	styleName="borderedBox"
+	verticalScrollPolicy="off"
+	horizontalScrollPolicy="off"
+	verticalGap="0"
+	show="getSettings()"
+	width="100%" 
+	height="100%" 
+	xmlns="nl.bs10.bright.views.settings.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.model.Model;
+			import com.adobe.utils.ArrayUtil;
+			import nl.bs10.brightlib.controllers.IconController;
+		]]>
+	</mx:Script>
+	
+	<mx:Canvas
+		height="80"
+		styleName="headerBar"
+		width="100%">
+		
+		<components:ShadowedLabel
+			y="16"
+			x="44"
+			text="Settings"
+			styleName="h2" />
+			
+		<mx:Button 
+			label="Reset Layout settings" 
+			click="resetSettings()"
+			toolTip="Resets display preferences"
+			y="16"
+			right="16" />
+			
+		<mx:Button 
+			label="Save" 
+			click="save()"
+			y="16"
+			right="16" />
+			
+		<!--<mx:TabBar
+			x="44"
+			bottom="0"
+			labelField="label"
+			dataProvider="{['Custom Settings']}"
+			itemClick="refresh()"
+			id="setting_tb" />-->
+	<!--, 'Localization'-->
+	</mx:Canvas>
+	
+<!--	<mx:ViewStack
+		selectedIndex="{setting_tb.selectedIndex}"
+		width="100%"
+		styleName="editorVs"
+		creationPolicy="all"
+		height="100%">
+		-->
+		
+	<!-- Inside canvas, otherwise degrafa fucks up when scrolling -->
+		<mx:Canvas
+			height="100%"
+			horizontalScrollPolicy="off"
+			styleName="editorVs"
+			width="100%">
+			
+			<components:GrayImageButton
+				source="{IconController.getGray('add')}" 
+				click="newSetting()"
+				y="10"
+				x="10" />
+			
+			<mx:Label
+				styleName="h3"
+				x="30"
+				click="newSetting()"
+				text="Add Setting" />
+			
+			<mx:VBox
+				y="30"
+				paddingLeft="10"
+				id="settings_vb"
+				horizontalScrollPolicy="off"
+				height="100%"
+				width="100%">
+				
+			</mx:VBox>
+			
+		</mx:Canvas>
+		
+	<!--	<LocalizationViewLayout
+			id="localizationview"
+			height="100%"
+			width="100%" />-->
+		
+	<!--</mx:ViewStack>-->
+	
+</SettingsView>

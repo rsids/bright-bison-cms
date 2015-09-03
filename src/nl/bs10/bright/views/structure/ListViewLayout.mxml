@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ListView
+	creationComplete="listview1_creationCompleteHandler(event)"
+	styleName="borderedBox"
+	width="100%" 
+	height="100%"
+	xmlns="nl.bs10.bright.views.structure.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.bright.components.*"
+	xmlns:libcomponents="nl.bs10.brightlib.components.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.utils.ArrayUtil;
+			
+			import mx.events.FlexEvent;
+			
+			import nl.bs10.bright.controllers.PermissionController;
+			import nl.bs10.brightlib.controllers.IconController;
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.brightlib.utils.Formatter;
+
+		]]>
+	</mx:Script>
+	
+	<mx:HBox
+		height="60"
+		styleName="headerBar"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		width="100%">
+		
+		<mx:Button
+			visible="{PermissionController.instance._CREATE_PAGE}"
+			includeInLayout="{PermissionController.instance._CREATE_PAGE}"
+			click="createItem()"
+			toolTip="Create a new page"
+			label="New page" />
+			
+		<mx:Button
+			visible="{PermissionController.instance._CREATE_PAGE}"
+			includeInLayout="{PermissionController.instance._CREATE_PAGE}"
+			enabled="{structure_dg.selectedIndex != -1}"
+			click="editItem()"
+			toolTip="Edit the selected page"
+			label="Edit page" />
+			
+		<mx:Button
+			id="delete_btn"
+			visible="{PermissionController.instance._DELETE_PAGE}"
+			includeInLayout="{PermissionController.instance._DELETE_PAGE}"
+			click="deletePage()"
+			toolTip="Delete the selected page"
+			enabled="{structure_dg.selectedItem}"
+			label="Delete page" />
+			
+		<mx:TextInput
+			width="100"
+			id="search_txt"
+			change="textChangeHandler(event)"
+			keyUp="textChangeHandler(event)" />
+		
+		<mx:Button
+			styleName="fakeCombo"
+			paddingRight="30"
+			toolTip="Filter the page list"
+			click="showFilters(event)"
+			label="Filter" />
+			
+	</mx:HBox>
+	
+	
+	
+	<mx:Canvas
+		borderColor="#929292"
+		borderStyle="solid"
+		borderThickness="1"
+		backgroundColor="#ffffff"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		height="100%"
+		width="100%">
+		
+		<mx:Canvas
+			width="100%"
+			top="0"
+			bottom="43">
+			
+			<components:BrightDataGrid
+				id="structure_dg"
+				styleName="noborder"
+				width="100%"
+				height="100%"
+				editItem="editItem()"
+				deleteItem="deletePage()"
+				itemDoubleClick="editItem()"
+				settingsname="page"
+				doubleClickEnabled="true"		
+				dragEnabled="{PermissionController.instance._MOVE_PAGE}"
+				dragStart="startDragNode(event)"
+				editable="false"
+				allowMultipleSelection="true"
+				dataProvider="{Model.instance.pageVO.apages}" />
+			
+		</mx:Canvas>
+		
+		<libcomponents:IconBox 
+			id="grayIconBar"
+			bottom="0">
+			
+			<libcomponents:GrayImageButton 
+				source="{IconController.getGray('cog')}" 
+				toolTip="Edit visible columns" 
+				click="editColumns()" />
+			
+		</libcomponents:IconBox>
+		
+	</mx:Canvas>
+	
+</ListView>

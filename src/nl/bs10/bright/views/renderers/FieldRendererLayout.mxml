@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FieldRenderer 
+	creationComplete="creationCompleteHandler()"
+	horizontalScrollPolicy="off"
+	width="100%" 
+	xmlns="nl.bs10.bright.views.renderers.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.brightlib.controllers.IconController;
+			import nl.bs10.bright.model.Model;
+		]]>
+	</mx:Script>
+	
+	<mx:Label x="10" y="10" text="Field type:"/>
+	
+	<mx:ComboBox 
+		labelField="pluginname"
+		prompt="Select type"
+		x="119" 
+		y="9" 
+		id="type_cmb" 
+		change="setFieldType(event)"
+		dataProvider="{Model.instance.templateVO.fieldTypes}" />
+
+	<mx:Label x="10" y="48" text="Label:"/>
+	
+	<mx:TextInput 
+		x="119" 
+		y="45" 
+		id="label_txt" 
+		change="checkDigit()"
+		restrict="[a-z_0-9]"
+		text="{data.label}"/>
+
+	<mx:Label x="10" y="84" text="Displaylabel:"/>
+	
+	<mx:TextInput 
+		x="119" 
+		y="83" 
+		id="displaylabel_txt" 
+		text="{data.displaylabel}"/>
+
+	<mx:Label x="10" y="122" text="Searchable:"/>
+	
+	<mx:CheckBox 
+		x="119" 
+		y="121" 
+		id="searchable_chb" 
+		selected="{data.searchable}"/>
+
+	<mx:Label x="314" y="10" text="Additional Data:"/>
+	
+	
+	<mx:VBox 
+		y="10"
+		id="data_vb" 
+		left="425" 
+		right="180"
+		styleName="paddedBox"
+		borderStyle="solid" 
+		backgroundAlpha="0.6" 
+		backgroundColor="#FFFFFF">
+	</mx:VBox>
+	
+	<components:GrayImageButton
+		click="moveItem(1)"
+		y="10" 
+		width="16" 
+		height="20" 
+		id="down_img" 
+		source="{IconController.DOWNARROW}" 
+		right="68"/>
+	
+	<components:GrayImageButton
+		click="moveItem(-1)"
+		y="10" 
+		width="16" 
+		height="20" 
+		id="up_img" 
+		source="{IconController.UPARROW}" 
+		right="44"/>
+	
+	<mx:Image 
+		click="deleteItem()"
+		buttonMode="true" 
+		y="10" 
+		width="16" 
+		height="16" 
+		id="del_img" 
+		source="{IconController.getIcon('delete')}" 
+		right="20"/>
+	
+</FieldRenderer>

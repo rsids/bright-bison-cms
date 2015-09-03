@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<degrafa:GraphicRectangularBorderSkin
+	width="10" 
+	height="10" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:degrafa="http://www.degrafa.com/2007"
+	xmlns:geometry="com.degrafa.geometry.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.controls.alertClasses.AlertForm;
+			[Bindable] private var _skinWidth:Number = 0;
+			
+			[Bindable] private var _skinHeight:Number = 0;
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+				if(parent is Alert) {
+					unscaledHeight += 34;
+					var i:int = 0;
+					for(i = 0; i < parent.numChildren; i++) {
+						if(parent.getChildAt(i) is AlertForm) {
+							parent.getChildAt(i).y = 26;
+						}
+					}
+				} 
+					
+				_skinWidth = unscaledWidth;
+				_skinHeight = unscaledHeight;
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+			}
+		]]>
+	</mx:Script>
+	
+	<degrafa:fills>
+		
+		<degrafa:LinearGradientFill angle="90" id="bg_gradient">
+		
+			<degrafa:GradientStop ratio="0" color="#d5ecfd" alpha=".9" />
+			
+			<degrafa:GradientStop ratio="1" color="#d5ecfd" alpha=".8" />
+			
+		</degrafa:LinearGradientFill>
+		
+	</degrafa:fills>
+	
+	<degrafa:strokes>
+		
+		<degrafa:LinearGradientStroke angle="90" id="blueStroke" weight="1">
+		
+			<degrafa:GradientStop ratio="0" color="#028BEE" alpha=".8" />
+			
+			<degrafa:GradientStop ratio="1" color="#057EDF" alpha=".4" />
+			
+		</degrafa:LinearGradientStroke>
+	
+	</degrafa:strokes>
+	
+	<degrafa:geometry>
+		
+		<degrafa:RoundedRectangle
+			width="{_skinWidth}"
+			height="{_skinHeight}"
+			cornerRadius="5"
+			fill="{bg_gradient}" />
+			
+		<degrafa:Line
+			x="0"
+			x1="{_skinWidth}"
+			y="30"
+			y1="30"
+			stroke="{blueStroke}">
+		
+			
+		</degrafa:Line>
+			
+	</degrafa:geometry>
+	
+	<degrafa:filters>
+	
+		<mx:DropShadowFilter alpha=".4" angle="90" distance="5" blurX="4" blurY="4"/>
+
+	</degrafa:filters>
+	
+</degrafa:GraphicRectangularBorderSkin>

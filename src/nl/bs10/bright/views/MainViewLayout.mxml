@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MainView 
+	top="10"
+	left="10"
+	right="10"
+	bottom="10"
+	verticalGap="6"
+	xmlns="nl.bs10.bright.views.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:structure="nl.bs10.bright.views.structure.*" 
+	xmlns:content="nl.bs10.bright.views.content.*" 
+	xmlns:files="nl.bs10.bright.views.files.*" 
+	xmlns:administrators="nl.bs10.bright.views.administrators.*" 
+	xmlns:templates="nl.bs10.bright.views.templates.*" 
+	xmlns:users="nl.bs10.bright.views.users.*" 
+	xmlns:components="nl.bs10.brightlib.components.*" 
+	xmlns:mail="nl.bs10.bright.views.mail.*" 
+	xmlns:settings="nl.bs10.bright.views.settings.*" 
+	xmlns:info="nl.bs10.bright.views.info.*" 
+	xmlns:calendar="nl.bs10.bright.views.calendar.*" 
+	xmlns:elements="nl.bs10.bright.views.elements.*" 
+	xmlns:maps="nl.bs10.bright.views.maps.*" 
+	xmlns:modules="nl.bs10.bright.views.modules.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import flash.net.navigateToURL;
+			
+			import mx.core.Application;
+			
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.bright.model.vo.ApplicationVO;
+			import nl.bs10.bright.skins.palettes.Palette;
+		]]>
+	</mx:Script>
+	
+	<mx:HBox
+		width="100%"
+		verticalAlign="middle"
+		horizontalAlign="right"
+		styleName="userBar">
+		
+		<mx:Image
+			width="52"
+			height="30"
+			click="gotoSite()"
+			buttonMode="true"
+			source="{Model.instance.applicationVO.logo_bw}" />
+			
+		<components:ShadowedLabel
+			clickable="true"
+			click="gotoSite()"
+			fontWeight="bold"
+			shadow="{Palette.instance.filters.panel_shadow}"
+			toolTip="Show website"
+			text="{Model.instance.applicationVO.config.general.sitename}" />
+			
+		<mx:Label text="|" />
+
+		
+		<!-- Do not show while not implemented
+		@todo Implement
+		<components:ShadowedLabel 
+			shadow="{Palette.instance.filters.panel_shadow}"
+			text="{Model.instance.administratorVO.administrator.name+ '\'s account'}" />
+		
+		<mx:Label text="|" />-->
+
+		<components:ShadowedLabel 
+			shadow="{Palette.instance.filters.panel_shadow}"
+			click="gotoHelp()"
+			clickable="true"
+			text="Help" />
+		
+		<mx:Label text="|" />
+
+		<components:ShadowedLabel 
+			shadow="{Palette.instance.filters.panel_shadow}"
+			click="gotoAbout()"
+			clickable="true"
+			text="About" />
+		
+		<mx:Label text="|" />
+
+		<components:ShadowedLabel text="Logout" 
+			shadow="{Palette.instance.filters.panel_shadow}"
+			clickable="true" click="logout()"/>
+		
+	</mx:HBox>
+	
+	<mx:HBox
+		styleName="topBar"
+		width="100%"
+		paddingLeft="20"
+		verticalAlign="middle"
+		height="38">
+			
+		<mx:LinkBar
+			buttonMode="true"
+			useHandCursor="true"
+			itemClick="setViewstack(event)"
+			
+			labelField="label"
+			dataProvider="{Model.instance.applicationVO.navitems}" />
+			
+		<mx:Spacer width="100%" />
+		
+		<mx:SWFLoader id="swfloader" width="41" height="9"/>
+			
+		<mx:Spacer width="10" />
+	</mx:HBox>
+	
+	<mx:Canvas
+		styleName="topBar"
+		width="100%"
+		height="100%">
+		
+		<mx:ViewStack
+			left="15"
+			top="15"
+			right="15"
+			bottom="20"
+			selectedIndex="{Model.instance.applicationVO.currentView}"
+			id="main_vs">
+			
+			<structure:StructureViewLayout
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				label="Structure" />
+			
+			<templates:TemplateViewLayout
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				id="templateView" />
+				
+			<files:FilesView
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				label="Files" />
+				
+			<administrators:AdminViewLayout
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				label="Users" />
+			
+			<users:UsersViewLayout
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				label="Users" />
+				
+			<mail:MailViewLayout
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				label="Mailing" />
+				
+			<settings:SettingsViewLayout
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				label="Settings" />
+			
+			<info:InfoViewLayout
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				label="Information" />
+				
+			<calendar:CalendarViewLayout
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				label="Calendar"/>
+				
+			<elements:ElementViewLayout
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				label="Elements"/>
+				
+			<maps:MapsViewLayout
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				label="Maps"/>
+				
+			<modules:ModuleView
+				id="moduleView"
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off" />
+				
+			
+		</mx:ViewStack>
+		
+		<mx:Label
+			left="20"
+			bottom="2"
+			useHandCursor="true"
+			buttonMode="true"
+			mouseChildren="false"
+			click="navigateToURL(new URLRequest('http://www.wewantfur.com'), '_blank')"
+			text="{ApplicationVO.COPYRIGHT}"
+			color="#726e6e"
+			fontSize="10" />
+		
+	</mx:Canvas>
+	
+</MainView>

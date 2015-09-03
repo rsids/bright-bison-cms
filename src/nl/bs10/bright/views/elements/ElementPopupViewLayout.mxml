@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ElementPopupView 
+	title="Choose Element(s)"
+	xmlns="nl.bs10.bright.views.elements.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="500" 
+	layout="absolute"
+	height="400">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.model.Model;
+		]]>
+	</mx:Script>
+	
+	<mx:Canvas
+		width="100%"
+		height="100%"
+		styleName="borderedBox">
+	
+		<mx:Button
+			right="150"
+			top="0"
+			label="Cancel"
+			click="close()" />
+	
+		<mx:Button
+			right="0"
+			top="0"
+			label="Select element(s)"
+			click="addElements()" />
+		
+		<mx:DataGrid
+			styleName="noborder"
+			top="40"
+			bottom="0" 
+			left="0"
+			allowMultipleSelection="{multiple}"
+			right="0"
+			id="element_dg"
+			dataProvider="{Model.instance.elementVO.aelements}">
+			
+			<mx:columns>
+				<mx:DataGridColumn
+					sortCompareFunction="sortByType"
+					editable="false"
+					itemRenderer="nl.bs10.brightlib.components.renderers.IconRenderer"
+					dataField="itemType"
+					width="22"
+					headerText="" />
+			
+				<mx:DataGridColumn
+					editable="false"
+					headerText="Label"
+					dataField="label" />
+			
+				<mx:DataGridColumn
+					editable="false"
+					headerText="Last Modified"
+					width="110"
+					labelFunction="date_formatter"
+					dataField="flmodificationdate" />
+				
+			</mx:columns>
+			
+		</mx:DataGrid>
+		
+	</mx:Canvas>
+		
+	
+</ElementPopupView>

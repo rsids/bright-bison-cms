@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<degrafa:GraphicRectangularBorderSkin
+	width="200" 
+	height="10" 
+	filters="{[Palette.instance.filters.panel_shadow]}"
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:degrafa="http://www.degrafa.com/2007"
+	xmlns:geometry="com.degrafa.geometry.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.bright.skins.palettes.Palette;
+			import nl.bs10.bright.skins.palettes.Fills;
+		]]>
+	</mx:Script>
+	<degrafa:geometry>
+		
+		<degrafa:RoundedRectangleComplex
+			width="{skinWidth}"
+			height="{skinHeight}"
+			bottomLeftRadius="{Palette.instance.base_radius}"
+			bottomRightRadius="{Palette.instance.base_radius}"
+			stroke="{Palette.instance.strokes[Model.instance.applicationVO.actioncolor + '_stroke']}"
+			fill="{Palette.instance.fills[Model.instance.applicationVO.actioncolor]}" />
+			
+	</degrafa:geometry>
+	
+</degrafa:GraphicRectangularBorderSkin>

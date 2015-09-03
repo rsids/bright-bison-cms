@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicRectangularBorderSkin
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns="http://www.degrafa.com/2007"
+	xmlns:geometry="com.degrafa.geometry.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.skins.palettes.Palette;
+			
+			override public function get measuredHeight():Number {
+				return 24;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	
+	<geometry>
+		
+		<RoundedRectangle
+			id="rect"
+			stroke="{Palette.instance.strokes.border_stroke}"
+			width="{skinWidth}"
+			height="{skinHeight}"
+			cornerRadius="2"
+			fill="{Palette.instance.fills.basic_button_fill}" />
+		
+		<RoundedRectangle
+			id="hit"
+			stroke="{Palette.instance.strokes.blue_gradient_stroke}"
+			width="{skinHeight}"
+			height="{skinHeight}"
+			right="0"
+			cornerRadius="2"
+			fill="{Palette.instance.fills.basic_blue_up_fill}" />
+			
+		<Polygon
+			id="triangle"
+			fill="{Palette.instance.fills.solid_dark_blue}"
+			top="11"
+			right="9">
+			<points>
+				<GraphicPoint
+					x="0"
+					y="0" />
+				<GraphicPoint
+					x="6"
+					y="0" />
+				<GraphicPoint
+					x="3"
+					y="4" />
+			</points>
+		</Polygon>
+			
+	</geometry>
+	
+	<!--<filters>
+	
+		<mx:DropShadowFilter alpha=".4" angle="90" distance="2" blurX="4" blurY="4"/>
+
+	</filters>-->
+	
+	<states>
+	
+		<State name="overSkin">
+			<SetProperty target="{rect}" name="filters" value="{[Palette.instance.filters.button_over]}" />
+		</State>
+	
+		<State name="downSkin">
+			<SetProperty target="{rect}" name="fill" value="{Palette.instance.fills.button_down_fill}"/>
+		</State>
+	<!--
+		
+		<State name="overSkin">
+			<SetProperty target="{rect}" name="stroke" value="{overStroke}"/>
+		</State>
+		
+		<State name="downSkin">
+			<SetProperty target="{rect}" name="stroke" value="{overStroke}"/>
+		</State>
+		
+		<State name="disabledSkin">
+		</State>
+    -->
+		
+    </states>
+
+	
+</GraphicRectangularBorderSkin>

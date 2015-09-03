@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<collections:FillCollection
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns="http://www.degrafa.com/2007"
+    xmlns:collections="com.degrafa.core.collections.*">
+	
+	<LinearGradientFill id="background_fill" angle="90">
+		<GradientStop ratio="0" color="#eaeaea" alpha="1" />
+		<GradientStop ratio="1" color="#c2c2c2" alpha="1" />
+	</LinearGradientFill>
+	
+	<LinearGradientFill id="scroll_background_fill">
+		<GradientStop ratio="0" color="#cecece" alpha="1" />
+		<GradientStop ratio="1" color="#ededed" alpha="1" />
+	</LinearGradientFill>
+	
+	<LinearGradientFill id="scroll_background_disabled_fill">
+		<GradientStop ratio="0" color="#ebebeb" alpha="1" />
+		<GradientStop ratio="1" color="#f7f7f7" alpha="1" />
+	</LinearGradientFill>
+
+	<LinearGradientFill id="scroll_background_inner_fill">
+		<GradientStop ratio="0" color="#ababab" alpha="1" />
+		<GradientStop ratio=".3" color="#c6c6c6" alpha="1" />
+	</LinearGradientFill>
+
+	<LinearGradientFill id="scroll_thumb_fill">
+		<GradientStop ratio="0" color="#dddddd" alpha="1" />
+		<GradientStop ratio="1" color="#f7f7f7" alpha="1" />
+	</LinearGradientFill>
+		
+	<LinearGradientFill id="scroll_over_fill">
+		<GradientStop ratio="0" color="#8fb9d1" alpha="1" />
+		<GradientStop ratio="1" color="#bce2f8" alpha="1" />
+	</LinearGradientFill>
+	
+	<LinearGradientFill id="basic_over_fill" angle="90">
+		<GradientStop ratio="0" color="#80adc7" alpha="1" />
+		<GradientStop ratio="1" color="#bce2f8" alpha="1" />
+	</LinearGradientFill>
+	
+	<LinearGradientFill id="basic_blue_up_fill" angle="90">
+		<GradientStop ratio="0" color="#bce2f8" alpha="1" />
+		<GradientStop ratio="1" color="#80adc7" alpha="1" />
+	</LinearGradientFill>
+	
+	<LinearGradientFill id="basic_disabled_fill" angle="90">
+		<GradientStop ratio="0" color="#f6f6f6" alpha="1" />
+		<GradientStop ratio="1" color="#e1e1e1" alpha="1" />
+	</LinearGradientFill>
+	
+		
+	<LinearGradientFill id="basic_button_fill" angle="90">
+		<GradientStop ratio="0" color="#f7f7f7" alpha="1" />
+		<GradientStop ratio="1" color="#cacaca" alpha="1" />
+	</LinearGradientFill>
+		
+	<LinearGradientFill id="button_down_fill" angle="90">
+		<GradientStop ratio="0" color="#c2c2c2" alpha="1" />
+		<GradientStop ratio="1" color="#efefef" alpha="1" />
+	</LinearGradientFill>
+		
+	<LinearGradientFill id="tab_selected_up_fill" angle="90">
+		<GradientStop ratio="0" color="#c2c2c2" alpha="1" />
+		<GradientStop ratio="1" color="#efefef" alpha="1" />
+	</LinearGradientFill>
+		
+	<LinearGradientFill id="green" angle="90">
+		<GradientStop ratio="0" color="#bef3b7" alpha="1" />
+		<GradientStop ratio="1" color="#92C882" alpha="1" />
+	</LinearGradientFill>
+	
+	<LinearGradientFill id="red" angle="90">
+		<GradientStop ratio="0" color="#F3B6B6" alpha="1" />
+		<GradientStop ratio="1" color="#C88282" alpha="1" />
+	</LinearGradientFill>
+		
+	<LinearGradientFill id="blue" angle="90">
+		<GradientStop ratio="0" color="#B6C2F3" alpha="1" />
+		<GradientStop ratio="1" color="#8295C8" alpha="1" />
+	</LinearGradientFill>
+		
+	<LinearGradientFill id="yellow" angle="90">
+		<GradientStop ratio="0" color="#F2F3B6" alpha="1" />
+		<GradientStop ratio="1" color="#C5C783" alpha="1" />
+	</LinearGradientFill>
+	
+	<SolidFill id="scroll_background_inner2_fill" color="#c6c6c6"/>
+	
+	
+	<SolidFill id="solid_dark_brown" color="#616161"/>
+	<SolidFill id="solid_dark_blue" color="#2d5972"/>
+	<SolidFill id="solid_dark_blue2" color="#3a6983"/>
+	<SolidFill id="solid_light_brown" color="#c0c0c0"/>
+	<SolidFill id="white" color="#ffffff"/>
+	
+	<BitmapFill id="check_bmf" source="@Embed('assets/skins/check.png')" smooth="true" repeatX="none" repeatY="none" />
+	
+</collections:FillCollection>

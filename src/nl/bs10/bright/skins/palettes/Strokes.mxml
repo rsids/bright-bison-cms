@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<collections:StrokeCollection
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns="http://www.degrafa.com/2007"
+    xmlns:collections="com.degrafa.core.collections.*">
+	
+	<SolidStroke id="border_stroke" weight="1" color="#929292" />
+	<SolidStroke id="green_stroke" weight="1" color="#498839" />
+	<SolidStroke id="red_stroke" weight="1" color="#893838" />
+	<SolidStroke id="blue_stroke" weight="1" color="#384889" />
+	<SolidStroke id="yellow_stroke" weight="1" color="#898738" />
+	
+	<LinearGradientStroke id="blue_gradient_stroke" angle="90" weight="1">
+		<GradientStop ratio="0" color="#8ab0c6" />
+		<GradientStop ratio="1" color="#587e93" />
+	</LinearGradientStroke>
+	
+</collections:StrokeCollection>

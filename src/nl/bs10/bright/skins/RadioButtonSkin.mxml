@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicRectangularBorderSkin
+	width="10" 
+	height="10" 
+	filters="{[Palette.instance.filters.panel_shadow]}"
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns="http://www.degrafa.com/2007"
+	xmlns:geometry="com.degrafa.geometry.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.skins.palettes.Palette;
+			import nl.bs10.bright.skins.palettes.Fills;
+			
+			override public function get measuredWidth():Number {
+				return 15; 
+			}
+
+			override public function get measuredHeight():Number {
+				return 15; 
+			}
+
+
+		]]>
+	</mx:Script>
+	
+	<geometry>
+		<GeometryComposition>
+			
+			<Circle
+				id="iconrect"
+				width="15"
+				height="15"
+				y="-7"
+				stroke="{Palette.instance.strokes.border_stroke}"
+				fill="{Palette.instance.fills.background_fill}" />
+				
+			<Circle
+				id="check"
+				width="5"
+				height="5"
+				x="5"
+				y="-2"
+				visible="false"
+				filters="{[Palette.instance.filters.scroll_inner]}"
+				fill="{Palette.instance.fills.solid_dark_blue2}" />
+				
+		</GeometryComposition>
+				
+			<!--<RoundedRectangle
+				state="overIcon"
+				width="15"
+				height="15"
+				cornerRadius="2"
+				y="-1"
+				stroke="{Palette.instance.strokes.border_stroke}"
+				fill="{Palette.instance.fills.basic_over_fill}" />
+			
+				
+			<RoundedRectangle
+				state="disabledIcon"
+				width="15"
+				height="15"
+				cornerRadius="2"
+				y="-1"
+				stroke="{Palette.instance.strokes.border_stroke}"
+				fill="{Palette.instance.fills.basic_disabled_fill}" />-->
+			
+	</geometry>
+	
+	<states>
+		
+		<State name="overIcon">
+			<SetProperty target="{iconrect}" name="fill" value="{Palette.instance.fills.basic_over_fill}"/>
+		</State>
+		
+		<State name="downIcon">
+			<SetProperty target="{iconrect}" name="fill" value="{Palette.instance.fills.basic_over_fill}"/>
+		</State>
+		
+		<State name="disabledIcon">
+			<SetProperty target="{iconrect}" name="fill" value="{Palette.instance.fills.basic_disabled_fill}"/>
+		</State>
+		
+		<State name="selectedUpIcon">
+			<SetProperty target="{iconrect}" name="fill" value="{Palette.instance.fills.basic_over_fill}"/>
+			<SetProperty target="{check}" name="visible" value="true"/>
+		</State>
+		
+		<State name="selectedOverIcon">
+			<SetProperty target="{iconrect}" name="fill" value="{Palette.instance.fills.basic_over_fill}"/>
+			<SetProperty target="{check}" name="visible" value="true"/>
+		</State>
+		
+		<State name="selectedDownIcon">
+			<SetProperty target="{iconrect}" name="fill" value="{Palette.instance.fills.basic_over_fill}"/>
+			<SetProperty target="{check}" name="visible" value="true"/>
+		</State>
+		
+		<State name="selectedDisabledIcon">
+			<SetProperty target="{check}" name="visible" value="true"/>
+			<SetProperty target="{check}" name="alpha" value=".4"/>
+			<SetProperty target="{iconrect}" name="fill" value="{Palette.instance.fills.basic_disabled_fill}"/>
+		</State>
+		
+    </states>
+</GraphicRectangularBorderSkin>

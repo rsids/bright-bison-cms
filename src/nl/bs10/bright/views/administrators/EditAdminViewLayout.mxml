@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditAdminView 
+	horizontalScrollPolicy="off"
+	verticalScrollPolicy="off"
+	styleName="borderedBox"
+	width="100%" 
+	height="100%" 
+	xmlns="nl.bs10.bright.views.administrators.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.utils.ArrayUtil;
+			
+			import nl.bs10.bright.controllers.PermissionController;
+			import nl.bs10.bright.model.Model;
+		]]>
+	</mx:Script>
+	
+	
+	
+	<mx:HBox
+		height="60"
+		styleName="headerBar"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		width="100%">
+	
+		<components:ShadowedLabel
+			text="{administratorEditTitle}"
+			styleName="h2" />
+		
+		<mx:Spacer
+			width="100%" />
+			
+		<mx:Button
+			label="Cancel"
+			click="cancel()" />
+		
+		<mx:Button
+			label="Save"
+			click="saveAdministrator()" />
+			
+	</mx:HBox>
+	
+	<mx:Canvas 
+		height="100%" 
+		width="100%"
+		styleName="editorVs">
+			
+		<mx:Label
+			text="Fullname"
+			x="10"
+			y="34" />
+			
+		<mx:TextInput
+			x="130"
+			y="30"
+			width="300"
+			creationComplete="name_txt.data='Fullname'"
+			id="name_txt"
+			text="{Model.instance.administratorVO.editAdministrator.name}" />
+		
+		<mx:Label
+			text="E-mail address"
+			x="10"
+			y="84" />
+			
+		<mx:TextInput
+			x="130"
+			y="80"
+			width="300"
+			creationComplete="email_txt.data='E-mail address'"
+			id="email_txt"
+			text="{Model.instance.administratorVO.editAdministrator.email}" />
+			
+		<mx:Label
+			text="Password"
+			x="455"
+			y="34" />
+			
+		<mx:TextInput
+			x="575"
+			y="30"
+			width="300"
+			creationComplete="password_txt.data='Password'"
+			enabled="{pwEnabled}"
+			displayAsPassword="true"
+			id="password_txt" />
+			
+		<mx:Label
+			text="Repeat"
+			x="455"
+			y="84" />
+			
+		<mx:TextInput
+			x="575"
+			y="80"
+			width="300"
+			creationComplete="repeat_txt.data = 'Repeat'"
+			enabled="{pwEnabled}"
+			displayAsPassword="true"
+			id="repeat_txt" />
+			
+		<mx:Label
+			x="10"
+			y="130" 
+			text="Permissions" 
+			fontWeight="bold"/>
+			
+		<mx:VBox
+			x="10"
+			y="156"
+			id="perm_vb"
+			visible="{PermissionController.instance._MANAGE_ADMIN}"
+			verticalGap="1"
+			width="100%"
+			height="450">
+			
+			<mx:Repeater
+				id="perm_rpt"
+				recycleChildren="false"
+				dataProvider="{PermissionController.instance.permissions}" >
+				
+				<mx:CheckBox
+					selected="{ArrayUtil.arrayContainsValue(Model.instance.administratorVO.editAdministrator.permissions, perm_rpt.currentItem.permission.toString())}"
+					data="{perm_rpt.currentItem.permission}"
+					label="{perm_rpt.currentItem.label}" />
+					
+			</mx:Repeater>
+				
+		</mx:VBox>
+	
+	</mx:Canvas>
+	
+</EditAdminView>

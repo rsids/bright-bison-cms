@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CreateShortcutView
+	xmlns="nl.bs10.bright.views.structure.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" 
+	height="100%">
+	
+	<mx:Panel	
+		verticalCenter="0"
+		horizontalCenter="0"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		layout="absolute"  
+		width="400" 
+		height="170"
+		title="Create Shortcut" >
+		
+		<mx:VBox
+			paddingLeft="20"
+			paddingRight="20"
+			y="34"
+			width="100%">
+			
+			<mx:Text
+				width="100%"
+				text="Drag the shortcut to the desired place, or close this window to cancel" />
+				
+			<mx:VBox
+				height="20"
+				id="child_vb"
+				width="100%">
+				
+			</mx:VBox>
+			
+			<mx:Button
+				click="close()"
+				label="Cancel" />
+			
+		</mx:VBox>
+		
+	</mx:Panel>
+	
+</CreateShortcutView>

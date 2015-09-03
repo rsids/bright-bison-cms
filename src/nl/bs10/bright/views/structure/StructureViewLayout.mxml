@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<StructureView 
+	width="100%" 
+	height="100%" 
+	xmlns="nl.bs10.bright.views.structure.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:tree="nl.flexperiments.tree.*" 
+	xmlns:content="nl.bs10.bright.views.content.*" 
+	xmlns:components="nl.bs10.brightlib.components.*" 
+	xmlns:page="nl.bs10.bright.views.page.*" 
+	xmlns:components1="nl.bs10.bright.components.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import nl.bs10.bright.controllers.PermissionController;
+			import nl.bs10.bright.controllers.SettingsController;
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.brightlib.controllers.IconController;
+
+		]]>
+	</mx:Script>
+	
+	<components1:BrightDividedBox
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		direction="horizontal"
+		dividername="pageDivider"
+		id="divider"
+		width="100%"
+		height="100%">
+		
+		<mx:Canvas
+			styleName="border"
+			borderColor="#929292"
+			borderStyle="solid"
+			backgroundColor="#ffffff"
+			horizontalScrollPolicy="off"
+			verticalScrollPolicy="off"
+			height="100%"
+			width="23%">
+			
+			<mx:Canvas
+				id="tree_cvs"
+				width="100%"
+				top="0"
+				bottom="43">
+				<!-- Must be inside canvas to get correct scrolling behaviour --> 
+				<tree:FlpTree
+					width="{tree_cvs.width - 20}"
+					height="100%"
+					verticalGap="3"
+					iconFunction="IconController.getIcon"
+					creationComplete="Model.instance.structureVO.tree = structure_tree"
+					itemRenderer="nl.bs10.bright.views.renderers.TreeItemRenderer"
+					allowDropOnAllNodes="{PermissionController.instance._MOVE_PAGE}"
+					dragEnabled="{PermissionController.instance._MOVE_PAGE}"
+					nodeDragDrop="pageDropped(event)"
+					styleName="borderedBox"
+					id="structure_tree"
+					openNodeOnHover="true"
+					hoverDelay="2000"
+					labelField="page.label"
+					open="structureOpenEvent(event)"
+					selectedNodeChange="selectedNodeChangeEvent(event)"
+					itemDoubleClick="editTreeItem(event)"
+					dataProvider="{Model.instance.structureVO.structure}" />
+					
+			</mx:Canvas>
+			
+			<components:IconBox
+				bottom="0">
+				
+				<components:GrayImageButton 
+					source="{IconController.getGray('add')}" 
+					toolTip="Add Page" 
+					click="addNewPageToTree(structure_tree.selectedNode)"
+					visible="{PermissionController.instance._CREATE_PAGE}"
+					includeInLayout="{PermissionController.instance._CREATE_PAGE}"
+					enabled="{structure_tree.selectedNode &amp;&amp; PermissionController.instance._CREATE_PAGE}" />
+				
+				<components:GrayImageButton 
+					source="{IconController.getGray('pencil')}" 
+					click="editTreeItem()"
+					toolTip="Edit Page"
+					visible="{PermissionController.instance._EDIT_PAGE}"
+					includeInLayout="{PermissionController.instance._EDIT_PAGE}"
+					enabled="{structure_tree.selectedNode &amp;&amp; PermissionController.instance._EDIT_PAGE}" />
+				
+				<components:GrayImageButton 
+					source="{IconController.getGray('lock')}" 
+					toolTip="Lock / Unlock Page" 
+					visible="{PermissionController.instance._MANAGE_TEMPLATE}"
+					includeInLayout="{PermissionController.instance._MANAGE_TEMPLATE}"
+					click="setLocked(structure_tree.selectedNode)"
+					enabled="{structure_tree.selectedNode &amp;&amp; PermissionController.instance._CREATE_PAGE}"  />
+				
+				<components:GrayImageButton 
+					source="{IconController.getGray('key')}" 
+					toolTip="Access rights" 
+					click="setLogin(structure_tree.selectedNode)"
+					visible="{PermissionController.instance._MANAGE_TEMPLATE}"
+					includeInLayout="{PermissionController.instance._MANAGE_TEMPLATE}"
+					enabled="{structure_tree.selectedNode &amp;&amp; PermissionController.instance._MANAGE_TEMPLATE}" />
+				
+				<components:GrayImageButton 
+					source="{IconController.getGray('refresh')}" 
+					click="refresh()"
+					toolTip="Refresh tree" />
+				
+				<components:GrayImageButton 
+					source="{IconController.getGray('trash')}" 
+					toolTip="Remove page from tree" 
+					click="deletePageByButton()"
+					visible="{PermissionController.instance._DELETE_PAGE}"
+					includeInLayout="{PermissionController.instance._DELETE_PAGE}"
+					enabled="{structure_tree.selectedNode &amp;&amp; PermissionController.instance._DELETE_PAGE}"  />
+				
+			</components:IconBox>
+			
+		</mx:Canvas>
+		
+		<mx:ViewStack
+			id="structure_vs"
+			creationPolicy="all"
+			width="77%"
+			height="100%">
+			
+			<ListViewLayout
+				width="100%"
+				height="100%" />
+				
+			<page:PageEditorViewLayout
+				contentVO="{Model.instance.pageVO}"
+				width="100%"
+				height="100%" />
+			
+		</mx:ViewStack>
+		
+	</components1:BrightDividedBox>
+		
+</StructureView>

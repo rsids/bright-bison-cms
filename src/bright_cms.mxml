@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AppController
+	styleName="Application"
+	width="100%" 
+	frameRate="60"
+	height="100%"
+	layout="absolute"
+	verticalScrollPolicy="off" 
+	horizontalScrollPolicy="off"
+	xmlns="nl.bs10.bright.controllers.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	
+	xmlns:programmatic="assets.programmatic.*" 
+	xmlns:views="nl.bs10.bright.views.*" 
+	xmlns:login="nl.bs10.bright.views.login.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.skins.palettes.Palette;
+			import nl.bs10.brightlib.controllers.IconController;
+			import nl.bs10.bright.model.Model;
+			
+			import mx.managers.PopUpManager;
+			import mx.managers.DragManager;
+			
+			private var popUpManager:PopUpManager;
+			private var dragManager:DragManager;
+			
+		]]>
+	</mx:Script>
+
+	<mx:Style source="/css/v3.css"/>
+	
+	
+	<!--Used to load the plugins in (to give them a stage property)-->
+	<mx:VBox
+		visible="false"
+		id="hiddenBox">
+		
+	</mx:VBox>
+	
+	<mx:Panel
+		horizontalCenter="0"
+		verticalCenter="0"
+		visible="{Model.instance.applicationVO.isLoading}"
+		includeInLayout="{Model.instance.applicationVO.isLoading}"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		width="400"
+		height="100"
+		layout="absolute"
+		title="Loading... Please wait">
+		
+		<mx:ProgressBar
+			indeterminate="true"
+			width="100%"
+			label="{Model.instance.applicationVO.loadingInfo}"
+			y="20" />
+	</mx:Panel>
+	
+	<mx:Canvas
+		horizontalCenter="0"
+		top="0"
+		visible="{Model.instance.applicationVO.isOnTestServer}"
+		includeInLayout="{Model.instance.applicationVO.isOnTestServer}"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		styleName="testServerNotification" >
+		
+		<mx:Label
+			text=" TESTSERVER "/>
+		
+	</mx:Canvas>
+	
+	<mx:Canvas
+		alpha="0"
+		id="actionbar_cvs"
+		styleName="greenActionBar"
+		horizontalCenter="0"
+		horizontalScrollPolicy="off"
+		width="300"
+		height="25">
+		
+		<mx:Image
+			x="5"
+			y="4"
+			width="16"
+			height="16"
+			id="action_icon" />
+		
+		<mx:Label
+			fontFamily="arial"
+			horizontalCenter="0"
+			y="2"
+			fontSize="14"
+			id="action_lbl"
+			maxWidth="260"
+			color="{Palette.instance.fills[Model.instance.applicationVO.actioncolor]}"
+			fontWeight="bold"
+			text="Saved" />
+			
+	</mx:Canvas>
+	
+	
+
+	<views:MainViewLayout
+		creationPolicy="none"
+		id="mainView"
+		visible="{Model.instance.applicationVO.applicationState  &gt; 0}"/>
+</AppController>

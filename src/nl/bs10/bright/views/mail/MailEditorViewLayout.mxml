@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MailEditorView 
+	styleName="borderedBox"
+	show="showHandler()"
+	width="100%"
+	height="100%"
+	horizontalScrollPolicy="off"
+	xmlns="nl.bs10.bright.views.mail.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.model.Model;
+			import mx.managers.PopUpManager;
+		]]>
+	</mx:Script>
+	
+		<mx:Canvas
+			height="104"
+			horizontalScrollPolicy="off"
+			verticalScrollPolicy="off"
+			styleName="headerBar"
+			width="100%">
+			
+			<components:ShadowedLabel
+				y="16"
+				x="44"
+				styleName="h2"
+				text="{contentVO.currentItem.label}" />
+				
+			<mx:HBox
+				y="16"
+				right="16">
+		
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					click="cancel()"
+					label="Cancel" />
+				
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					visible="{contentVO.currentItem.pageId != 0}"
+					includeInLayout="{contentVO.currentItem.pageId != 0}"
+					click="saveas()"
+					label="Save As" />
+					
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					click="save()"
+					label="Save" />
+					
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					click="preview()"
+					toolTip="Prieview in browser"
+					label="Preview" />
+					
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					click="sendTest()"
+					label="Send Test Mail" />
+					
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					id="send_btn"
+					click="send(event)"
+					label="Send Mail" />
+				
+			</mx:HBox>
+			
+			<mx:TabBar
+				x="44"
+				bottom="0"
+				labelField="label"
+				dataProvider="{Model.instance.mailingVO.tabs}"
+				itemClick="setViewStack(event)"
+				id="lang_tb" />
+			
+		</mx:Canvas>
+		
+		<mx:ViewStack
+			id="item_vs"
+			styleName="editorVs"
+			width="100%"
+			height="100%">
+			
+			<mx:Canvas
+				height="100%"
+				horizontalScrollPolicy="off"
+				width="100%">
+			
+				<mx:VBox
+					paddingLeft="43"
+					paddingTop="32"
+					paddingBottom="32"
+					verticalGap="10"
+					width="100%"
+					height="100%">
+					
+					<!-- To prevent errors -->
+					<mx:TextInput
+						visible="false"
+						includeInLayout="false"
+						text="{contentVO.currentItem.label}"
+						id="label_txt" />
+					
+					<mx:HBox
+						horizontalScrollPolicy="off"
+						verticalScrollPolicy="off"
+						width="100%">
+						
+						<mx:Label
+							width="200"
+							text="Select template:" />
+						
+						<mx:ComboBox
+							prompt="page template"
+							width="300"
+							rowCount="10"
+							itemRenderer="nl.bs10.bright.views.renderers.TemplateDefRenderer"
+							change="typeChangeHandler(event)"
+							dataProvider="{Model.instance.templateVO.mailingDefinitions}"
+							toolTip="To create new content, first select the type of content you want to create"
+							labelField="templatename"
+							id="types_cmb" />
+					</mx:HBox>
+					
+					<mx:HBox
+						horizontalScrollPolicy="off"
+						verticalScrollPolicy="off"
+						width="100%">
+							
+						<mx:Label
+							width="200"
+							text="Groups to send to:" />
+						
+						<mx:VBox
+							id="usergroup_vb"
+							width="100%">
+							
+							<mx:Repeater
+								id="ug_rpt"
+								dataProvider="{Model.instance.userVO.usergroups}">
+								
+								<mx:CheckBox 
+									data="{ug_rpt.currentItem}" 
+									label="{ug_rpt.currentItem.groupname}" />
+								
+							</mx:Repeater>
+							
+						</mx:VBox>
+						
+					</mx:HBox>
+						
+					<mx:HBox
+						horizontalScrollPolicy="off"
+						verticalScrollPolicy="off"
+						width="100%">
+						
+						<mx:Label
+							width="200"
+							text="Send test mail to:" />
+							
+						<mx:TextInput
+							width="300"
+							id="testmail_txt" />
+					</mx:HBox>
+						
+				</mx:VBox>
+			</mx:Canvas>
+			
+		</mx:ViewStack>
+		
+</MailEditorView>

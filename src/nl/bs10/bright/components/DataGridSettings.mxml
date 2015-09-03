@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.utils.ArrayUtil;
+			
+			import mx.collections.ArrayCollection;
+			import mx.collections.Sort;
+			import mx.events.CollectionEvent;
+			import mx.events.DragEvent;
+			
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.brightlib.components.Prompt;
+			import nl.bs10.brightlib.events.BrightEvent;
+			
+			[Bindable] protected var availableColumns:ArrayCollection;
+			[Bindable] protected var visibleColumns:ArrayCollection;
+			
+			private var _visibleColumnsSetting:String;
+			private var _visibleColumnsSettingChanged:Boolean;
+			
+			private var _allColumns:Array;
+			private var _allColumnsChanged:Boolean;
+			
+			private var _availableSort:Sort;
+			
+			override protected function commitProperties():void {
+				super.commitProperties();
+				if(_visibleColumnsSettingChanged && _allColumnsChanged) {
+					_visibleColumnsSettingChanged = false;
+					_allColumnsChanged = false;
+					
+					if(visibleColumns) {
+						visibleColumns.removeEventListener(CollectionEvent.COLLECTION_CHANGE, _onCollectionChange);
+					}
+					
+					if(availableColumns) {
+						availableColumns.removeAll();
+					}
+					
+					if(allColumns && visibleColumnsSetting) {
+						var cols:* = Model.instance.administratorVO.getSetting(visibleColumnsSetting);
+						
+						var available:Array = ArrayUtil.copyArray(allColumns);
+						var visible:Array = Model.instance.administratorVO.getSetting(visibleColumnsSetting);
+						for each(var item:String in visible) {
+							ArrayUtil.removeValueFromArray(available, item);
+						} 
+						
+						availableColumns = new ArrayCollection(available);
+						visibleColumns = new ArrayCollection(visible);
+						visibleColumns.addEventListener(CollectionEvent.COLLECTION_CHANGE, _onCollectionChange, false, 0, true);
+						if(!_availableSort) {
+							_availableSort = new Sort();
+						}
+					}
+				}
+
+			}
+			
+			
+			[Bindable(event="allColumnsChanged")]
+			public function set allColumns(value:Array):void {
+				if(value !== _allColumns) {
+					_allColumns = value;
+					_allColumnsChanged = true;
+					invalidateProperties();
+					dispatchEvent(new Event("allColumnsChanged"));
+				}
+			}
+			
+			/** 
+			 * Getter/Setter methods for the allColumns property
+			 **/
+			public function get allColumns():Array {
+				return _allColumns;
+			}
+			
+			[Bindable(event="visibleColumnsSettingChanged")]
+			public function set visibleColumnsSetting(value:String):void {
+				if(value !== _visibleColumnsSetting) {
+					_visibleColumnsSetting = value;
+					_visibleColumnsSettingChanged = true;
+					invalidateProperties();
+					dispatchEvent(new Event("visibleColumnsSettingChanged"));
+				}
+			}
+			
+			/** 
+			 * Getter/Setter methods for the visibleColumnsSetting property
+			 **/
+			public function get visibleColumnsSetting():String {
+				return _visibleColumnsSetting;
+			}
+			
+			protected function availableCols_dragDropHandler(event:DragEvent):void {
+				var item:String = (event.dragSource.dataForFormat('items') as Array)[0];
+				var arr:Array = ArrayUtil.copyArray(allColumns);
+				if(!ArrayUtil.arrayContainsValue(arr, item)) {
+					// Item is a custom field
+					event.preventDefault();
+					event['currentTarget'].hideDropFeedback(event);
+					return;
+				}
+				availableColumns.sort = _availableSort;
+				availableColumns.refresh();
+			}
+			
+			protected function customFieldBtn_clickHandler(event:MouseEvent):void {
+				Prompt.show('Enter the name of the field', 'Enter fieldname', _onCustomFieldSubmit, '[a-z]');
+			}
+			
+			/**
+			 * _onCustomFieldSubmit function
+			 *  
+			 **/
+			private function _onCustomFieldSubmit(value:BrightEvent):void {
+				if(value.data.toString() != '')
+					visibleColumns.addItem(value.data.toString());
+			}
+			
+			/**
+			 * _onCollectionChange function
+			 *  
+			 **/
+			private function _onCollectionChange(event:CollectionEvent):void {
+				Model.instance.administratorVO.setSetting(visibleColumnsSetting, visibleColumns.toArray());
+				var cn:String = visibleColumnsSetting.split('.')[0];
+				Model.instance.administratorVO.setSetting(cn + '.colWidths', null);
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Label
+		x="10"
+		y="2"
+		text="Visible Columns" />
+	
+	<mx:List
+		x="10"
+		y="22"
+		width="150"
+		height="200"
+		dragEnabled="true"
+		dragMoveEnabled="true"
+		dropEnabled="true"
+		dataProvider="{visibleColumns}"
+		id="visibleCols" />
+	
+	<mx:Label
+		x="200"
+		y="2"
+		text="Available Columns" />
+	
+	<mx:List
+		x="200"
+		y="22"
+		width="150"
+		height="200"
+		dragEnabled="true"
+		dragMoveEnabled="true"
+		dropEnabled="true"
+		dragDrop="availableCols_dragDropHandler(event)"
+		dataProvider="{availableColumns}"
+		id="availableCols" />
+	
+</mx:Canvas>

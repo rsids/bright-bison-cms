@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox  
+	width="100%" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*"
+	xmlns:validators="nl.bs10.bright.validators.*" 
+	xmlns:brightComponents="nl.bs10.bright.components.*">
+	
+	<mx:Metadata>
+		[Event(name='datesChanged', type='flash.events.Event', false, false)]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.events.ValidationResultEvent;
+			
+			import nl.bs10.bright.model.objects.CalendarDateObject;
+			import nl.bs10.brightlib.controllers.IconController;
+			import nl.bs10.brightlib.utils.DateUtils;
+			import nl.bs10.brightlib.utils.Formatter;
+			
+			public var timeObject:Object = {start: '', end:''};
+			
+			private var _dates:CalendarDateObject;
+			private var _datesChanged:Boolean;
+			private var _startDateChanged:Boolean;
+			private var _endDateChanged:Boolean;
+			private var _starttimeChanged:Boolean;
+			private var _endtimeChanged:Boolean;
+			private var _allDayChanged:Boolean;
+			private var _noEndChanged:Boolean;
+//			private var _dispatch:Boolean;
+			private var _startRange:Date;
+			
+			/**
+			 * Default difference between start & enddate, in milliseconds
+			 */
+			private static const _DIFF:Number = 7200000;
+			
+			override protected function commitProperties():void {
+				super.commitProperties();
+				var diff:Number;
+				var time:Date;
+				var validate:Boolean = false;
+				if(_dates) {
+//					if(_dates.flstarttime == null) {
+//						_dates.flstarttime = new Date();
+//						_dates.flstarttime.setHours(20,0,0,0)
+//						_dates.flendtime = new Date();
+//						_dates.flendtime.setTime(_dates.flstarttime.getTime()+_DIFF);
+//					}
+					if(_startDateChanged) {
+						_startDateChanged = false;
+						// Get old diff
+						diff = dates.flendtime.getTime() - dates.flstarttime.getTime();
+						
+						// Invalid differend, set to default (2 hours)
+						if(diff < 0) 
+							diff = _DIFF;
+						
+						dates.flstarttime = start_df.selectedDate;
+						startRange = new Date(dates.flstarttime.getTime() - 86400000);
+						time = DateUtils.timestringToDate(starttime_txt.text);
+						dates.flstarttime.setHours(time.getHours(), time.getMinutes());
+						
+						// Check if enddate is still valid
+//						if(dates.flstarttime.getTime() > dates.flendtime.getTime()) {
+//							dates.flendtime.setTime(dates.flstarttime.getTime() + diff);
+//						}
+						validate = true;
+//						_dispatch = true;
+					}
+					
+					if(_endDateChanged) {
+						_endDateChanged = false;
+						
+						dates.flendtime = end_df.selectedDate;
+						time = DateUtils.timestringToDate(endtime_txt.text);
+						dates.flendtime.setHours(time.getHours(), time.getMinutes());
+						
+						// Check if enddate is still valid when starttime is taken into account
+//						if(dates.flstarttime.getTime() > dates.flendtime.getTime()) {
+//							// Add 1 day, should be sufficient
+//							dates.flendtime.setDate(dates.flendtime.getDate()+1);
+//							_datesChanged = true;
+//						}
+//						_dispatch = true;
+						
+						validate = true;
+					}
+					
+					if(_starttimeChanged) {
+						_starttimeChanged = false;
+						diff = dates.flendtime.getTime() - dates.flstarttime.getTime();
+						
+						dates.flstarttime = start_df.selectedDate;
+						time = DateUtils.timestringToDate(starttime_txt.text);
+						dates.flstarttime.setHours(time.getHours(), time.getMinutes());
+
+						// Invalid differend, set to default (2 hours)
+//						if(diff < 0) 
+//							diff = _DIFF;
+//						
+//						dates.flendtime.setTime(dates.flstarttime.getTime() + diff);
+//						_datesChanged = true;
+//						_dispatch = true;
+						
+						validate = true;
+					}
+					
+					if(_endtimeChanged) {
+						_endtimeChanged = false;
+						dates.flendtime = end_df.selectedDate;
+						time = DateUtils.timestringToDate(endtime_txt.text);
+						dates.flendtime.setHours(time.getHours(), time.getMinutes());
+						
+						// Check if enddate is still valid when starttime is taken into account
+//						if(dates.flstarttime.getTime() > dates.flendtime.getTime()) {
+//							// Send the enddate as startdate +1, keep same time
+//							dates.flendtime = start_df.selectedDate;
+//							dates.flendtime.setDate(dates.flendtime.getDate()+1);
+//							dates.flendtime.setHours(time.getHours(), time.getMinutes());
+//						}
+//						_dispatch = true;
+						
+						validate = true;
+					}
+					
+					if(_allDayChanged) {
+						_allDayChanged = false;
+						dates.allday = allday_chb.selected;
+						if(dates.allday) {
+							dates.flstarttime.setHours(0,0,0,0);
+							// 20121127 Edit
+							// Set end to end of day, so it will become part of range
+							dates.flendtime.setHours(23,59,59,0);
+							/* if(dates.flstarttime.getTime() == dates.flendtime.getTime()) {
+								dates.flendtime.setTime(dates.flendtime.getTime() +_DIFF);
+							} */
+//							_datesChanged = true;
+						}
+//						_dispatch = true;
+						
+						validate = true;
+					}
+					
+					if(_noEndChanged) {
+						_noEndChanged = false;
+						dates.noend = noend_chb.selected;
+						/*if(dates.noend) {
+							dates.flendtime.setTime(dates.flstarttime.getTime() +_DIFF);
+						}*/
+//						_dispatch = true;
+						
+						validate = true;
+					}
+
+//					if(_datesChanged) {
+//						_datesChanged = false;
+//						starttime_txt.text = Formatter.realFormatDate(dates.flstarttime, "J:NN");
+//						endtime_txt.text = Formatter.realFormatDate(dates.flendtime, "J:NN");
+//						startRange = new Date(dates.flstarttime.getTime() - 86400000);
+//						if(_dispatch) {
+//							_dispatch = false;
+//							dispatchEvent(new Event("datesChanged"));
+//						}
+//						
+//					}
+					
+					if(validate) {
+						dispatchEvent(new Event("doValidation"));
+					}
+				}
+			}
+			
+			/**
+			 * _addItem function
+			 *  
+			 **/
+			private function _addItem():void {
+				var item:CalendarDateRenderer = new CalendarDateRenderer();
+				var d:CalendarDateObject = dates.clone();
+				if(d.flstarttime)
+					d.flstarttime.setDate(d.flstarttime.date + 1);
+				if(d.flendtime)
+					d.flendtime.setDate(d.flendtime.date + 1);
+				
+				item.dates = d;
+				parent.addChild(item);
+			}
+			
+			/**
+			* Converts a time string (23:19) to the number of milliseconds since midnight
+			* @param String value The time object
+			* @return int The number of milliseconds since midnight;
+			* /
+			private function _getTime(value:String):Date {
+				var va:Array = value.split(":");
+				var hrs:uint = parseInt(va[0]);
+				hrs = Math.min(hrs, 23);
+				var mins:uint = 0;
+				if(va.length > 1) {
+					mins = parseInt(va[1]);
+					mins = Math.min(mins, 59);
+				}
+				var d:Date = new Date();
+				d.setTime(0);
+				d.setHours(hrs);
+				d.setMinutes(mins);
+				return d
+			}*/
+			
+			private function _onAllDayChange(event:Event):void {
+				_allDayChanged = true;
+				invalidateProperties();
+			}
+			
+			private function _onEndDateChange(event:CalendarLayoutChangeEvent):void {
+				_endDateChanged = true;
+				invalidateProperties();
+			}
+			
+			private function _onEndTimeChange(event:FocusEvent):void {
+				_endtimeChanged = true;
+				invalidateProperties();
+			}
+			
+			private function _onStartDateChange(event:CalendarLayoutChangeEvent):void {
+				_startDateChanged = true;
+				invalidateProperties();
+			}
+			
+			private function _onStarttimeOut(event:FocusEvent):void{
+				_starttimeChanged = true;
+				invalidateProperties();
+			}
+			
+			private function _onNoEndChange(event:Event):void {
+				_noEndChanged = true;
+				invalidateProperties();
+			}
+			
+			[Bindable(event="datesChanged")]
+			public function set dates(value:CalendarDateObject):void {
+				if(value != _dates) {
+					_dates = value;
+					if(_dates.flstarttime == null) {
+						_dates.flstarttime = new Date();
+						_dates.flstarttime.setHours(20,0,0,0)
+						_dates.flendtime = new Date();
+						_dates.flendtime.setTime(_dates.flstarttime.getTime()+_DIFF);
+					}
+					_datesChanged = true;
+					invalidateProperties();
+					dispatchEvent(new Event("datesChanged"));
+					dispatchEvent(new Event("doValidation"));
+				}
+			}
+			
+			public function get dates():CalendarDateObject {
+				return _dates;
+			}
+			
+			
+			[Bindable(event="startRangeChanged")]
+			protected function set startRange(value:Date):void {
+				if(value !== _startRange) {
+					_startRange = value;
+					dispatchEvent(new Event("startRangeChanged"));
+				}
+			}
+			
+			protected function get startRange():Date {
+				return _startRange;
+			}
+			
+
+		]]>
+	</mx:Script>
+	
+	
+	<mx:Label text="From:" width="160" />
+	
+	<components:BrightDateField
+		formatString="{Formatter.dateFormat}"
+		width="100"
+		change="_onStartDateChange(event)"
+		selectedDate="{dates.flstarttime}"
+		id="start_df" />
+	
+	<brightComponents:BrightTextInput
+		width="50"
+		id="starttime_txt"
+		errorColor="#ff0000"
+		restrict="[0-9:]"
+		focusOut="_onStarttimeOut(event)"
+		enabled="{!allday_chb.selected}"
+		maxChars="5"
+		text="12:00" />
+	
+	<mx:Label text="To:" textAlign="right" width="50" />
+	
+	<components:BrightDateField
+		formatString="{Formatter.dateFormat}"
+		width="100"
+		change="_onEndDateChange(event)"
+		selectedDate="{dates.flendtime}"
+		disabledRanges="{[{rangeEnd:startRange}]}"
+		id="end_df" />
+	
+	<brightComponents:BrightTextInput
+		width="50"
+		restrict="[0-9:]"
+		maxChars="5"
+		focusOut="_onEndTimeChange(event)"
+		id="endtime_txt"
+		enabled="{!dates.allday}"
+		text="12:00" />
+	
+	<mx:CheckBox
+		selected="{dates.allday}"
+		change="_onAllDayChange(event)"
+		id="allday_chb"
+		label="All day" />
+	
+	<mx:CheckBox
+		selected="{dates.noend}"
+		id="noend_chb"
+		change="_onNoEndChange(event)"
+		label="No end time" />
+	
+	<mx:Spacer width="100%" />
+	
+	<components:GrayImageButton
+		click="_addItem()"
+		source="{IconController.getGray('add')}" />
+	
+	<components:GrayImageButton
+		click="parent.removeChild(this)"
+		includeInLayout="{parent.numChildren &gt; 1}"
+		visible="{parent.numChildren &gt; 1}"
+		source="{IconController.getGray('delete')}" />
+	<!--
+	<validators:CalendarDateValidator
+		id="myDateValidator"
+		required="true"
+		
+		source="{end_df}"
+		property="dates"
+		trigger="{this}"
+		triggerEvent="doValidation"/>-->
+
+		
+</mx:HBox>

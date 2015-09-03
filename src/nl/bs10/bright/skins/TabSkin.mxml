@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<degrafa:GraphicRectangularBorderSkin
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:degrafa="http://www.degrafa.com/2007"
+	xmlns:geometry="com.degrafa.geometry.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.skins.palettes.Palette;
+			
+			override public function get measuredHeight():Number {
+				return 31;
+			}
+			
+			override public function get measuredWidth():Number {
+				return super.measuredWidth + 20;
+			}
+		]]>
+	</mx:Script>
+	
+	<degrafa:fills>
+		
+		<degrafa:LinearGradientFill angle="90" id="bg_disabled">
+			<degrafa:GradientStop ratio="0" color="#efefef" alpha=".3" />
+			<degrafa:GradientStop ratio="1" color="#afafaf" alpha=".3" />
+		</degrafa:LinearGradientFill>
+		
+	</degrafa:fills>
+	
+	<degrafa:geometry>
+		
+		<degrafa:RoundedRectangleComplex
+			id="borderrect"
+			stroke="{Palette.instance.strokes.border_stroke}"
+			width="{skinWidth}"
+			height="{skinHeight-1}"
+			topLeftRadius="2"
+			topRightRadius="2" />
+
+		<degrafa:RoundedRectangleComplex
+			id="rect"
+			width="{skinWidth-2}"
+			height="{skinHeight-1}"
+			x="1"
+			y="1"
+			topLeftRadius="2"
+			topRightRadius="2"
+			fill="{Palette.instance.fills.basic_button_fill}" />
+			
+	</degrafa:geometry>
+	
+	
+	<degrafa:states>
+		
+		<degrafa:State name="overSkin">
+			<degrafa:SetProperty target="{rect}" name="filters" value="{[Palette.instance.filters.button_over]}" />
+		</degrafa:State>
+		
+		<degrafa:State name="downSkin">
+		</degrafa:State>
+		
+		<degrafa:State name="disabledSkin">
+			<degrafa:SetProperty target="{rect}" name="fill" value="{bg_disabled}"/>
+		</degrafa:State>
+		
+		<degrafa:State name="upSkin">
+			<degrafa:SetProperty target="{borderrect}" name="stroke" value="{Palette.instance.strokes.border_stroke}"/>
+		</degrafa:State>
+		
+		<degrafa:State name="selectedUpSkin">
+			<degrafa:SetProperty target="{rect}" name="fill" value="{Palette.instance.fills.tab_selected_up_fill}" />
+		</degrafa:State>
+		
+    </degrafa:states>
+
+	
+</degrafa:GraphicRectangularBorderSkin>

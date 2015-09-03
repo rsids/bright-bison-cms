@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*" 
+	xmlns:components1="nl.bs10.bright.components.*" 
+	xmlns:validators="nl.bs10.bright.validators.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CalendarLayoutChangeEvent;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.ValidationResult;
+			import mx.validators.Validator;
+			
+			import nl.bs10.bright.model.objects.CalendarDateObject;
+			import nl.bs10.bright.model.objects.DateObject;
+			import nl.bs10.bright.validators.CalendarDateValidator;
+			import nl.bs10.brightlib.controllers.ValidatorController;
+			import nl.bs10.brightlib.utils.DateUtils;
+			
+			[Bindable]
+			public var calendarDateObject:CalendarDateObject;
+			
+			[Bindable]
+			[Private]
+			public var dateObject:DateObject = new DateObject();
+			
+			private var _pristine:Boolean = true;
+			private var _datesChanged:Boolean;
+			private var _startDateChanged:Boolean;
+			private var _endDateChanged:Boolean;
+			private var _startTimeChanged:Boolean;
+			private var _endTimeChanged:Boolean;
+			private var _allDayChanged:Boolean;
+			private var _noEndChanged:Boolean;
+			private var _startRange:Date;
+			
+	
+			/**
+			 * Default difference between start & enddate, in milliseconds
+			 */
+			private static const _DIFF:Number = 7200000;
+
+			override protected function commitProperties():void {
+				super.commitProperties();
+				
+				var validationRequired:Boolean = false;
+				
+				if(_startDateChanged) {
+					_startDateChanged = false;
+					validationRequired = true;
+					dateObject.startDate = start_df.selectedDate;
+					// Set the startRange to the same date as the startDate, -1 day
+					// Otherwise, the event cannot end on the same day
+					startRange = new Date(dateObject.startDate.getTime() - 86400000);
+				}
+				
+				if(_startTimeChanged) {
+					_startTimeChanged = false;
+					validationRequired = true;
+					dateObject.startTime = starttime_txt.text;
+				}
+				
+				
+				if(_noEndChanged && dateObject.startDate != null) {
+					_noEndChanged = false;
+					validationRequired = true;
+					dateObject.noEndTime = noend_chb.selected;
+					
+					if(dateObject.noEndTime) {
+						dateObject.endDate = new Date(dateObject.startDate.getTime());
+						dateObject.endTime = '23:59';
+					}
+				}
+				
+				if(_endDateChanged) {
+					_endDateChanged = false;
+					validationRequired = true;
+					dateObject.endDate = end_df.selectedDate;
+				}
+				
+				if(_endTimeChanged) {
+					_endTimeChanged = false;
+					validationRequired = true;
+					dateObject.endTime = endtime_txt.text;
+				}
+				
+				if(_allDayChanged) {
+					_allDayChanged = false;
+					validationRequired = true;
+					
+					dateObject.allDay = allday_chb.selected;
+					
+					if(dateObject.allDay) {
+						dateObject.startTime = '00:00';
+						dateObject.endTime = '23:59';
+					}
+				}
+				
+				if(validationRequired) {
+					validate();
+				}
+			}
+			
+			override public function validationResultHandler(event:ValidationResultEvent):void {
+				super.validationResultHandler(event);
+			}
+			
+			protected function validate():void {
+				var isValid:Boolean = false;
+				
+				starttime_txt.addValidationResults(validateTimeString(starttime_txt.text));
+				endtime_txt.addValidationResults(validateTimeString(endtime_txt.text));
+				
+				if(!starttime_txt.isValid || !endtime_txt.isValid) {
+					return;
+				}
+				
+				start_df.addValidationResults(validateDate(dateObject, 'startDate'));
+				end_df.addValidationResults(validateDate(dateObject, 'endDate'));
+				
+			}
+			
+			[Bindable(event="startRangeChanged")]
+			protected function set startRange(value:Date):void {
+				if(value !== _startRange) {
+					_startRange = value;
+					dispatchEvent(new Event("startRangeChanged"));
+				}
+			}
+			
+			protected function get startRange():Date {
+				return _startRange;
+			}
+
+			protected function start_df_changeHandler(event:CalendarLayoutChangeEvent):void
+			{
+				_pristine = false;
+				_startDateChanged = true;
+				invalidateProperties();
+			}
+
+
+			protected function starttime_txt_changeHandler(event:Event):void
+			{
+				_pristine = false;
+				_startTimeChanged = true;
+				invalidateProperties();
+			}
+
+
+			protected function end_df_changeHandler(event:CalendarLayoutChangeEvent):void
+			{
+				_pristine = false;
+				_endDateChanged = true;
+				invalidateProperties();
+			}
+
+
+			protected function endtime_txt_changeHandler(event:Event):void
+			{
+				_pristine = false;
+				_endTimeChanged = true;
+				invalidateProperties();
+			}
+
+
+			protected function allday_chb_changeHandler(event:Event):void
+			{
+				_pristine = false;
+				_allDayChanged = true;
+				invalidateProperties();
+			}
+
+
+			protected function noend_chb_changeHandler(event:Event):void
+			{
+				_pristine = false;
+				_noEndChanged = true;
+				invalidateProperties();
+			}
+			
+			private function validateTimeString(value:Object):Array {
+				var time:String = value.toString();
+				
+				if(time.length === 0) {
+					return [new ValidationResult(true, "time", "tooshort", "Invalid time")];
+				}
+				
+				
+				var va:Array = time.split(":"),
+					hrs:uint = parseInt(va[0]),
+					mins:uint = va.length > 1 ? va[1] : 0,
+					results:Array = [];
+				
+				if(hrs > 23) {
+					results.push(new ValidationResult(true, "time", "invalid-hours", "The number of hours ("+ hrs.toString() +") is invalid"));
+				}
+				
+				if(mins > 59) {
+					results.push(new ValidationResult(true, "time", "invalid-minutes", "The number of minutes ("+ mins.toString() +") is invalid"));
+				}
+				
+				if(results.length === 0) {
+					results.push(new ValidationResult(false));
+				}
+				
+				return results;
+			}
+			
+			private function validateDate(dateObject:DateObject, property:String):Array {
+				var startTime:Date,
+					endTime:Date;
+					
+				if(property == 'startDate') {
+					if(dateObject.startDate != null) {
+						startTime = DateUtils.timestringToDate(dateObject.startTime);
+						dateObject.startDate.setTime(dateObject.startDate.getTime() + startTime.getTime());
+						
+						return [new ValidationResult(false)];
+					} else {
+						return [new ValidationResult(true, "date", "invalid-date", "The start date is required")];
+					}
+				}
+				
+				if(dateObject.noEndTime) {
+					
+					dateObject.endDate = new Date(dateObject.startDate.getTime());
+					dateObject.endDate.setTime(dateObject.endDate.getTime() + _DIFF);
+					dateObject.endTime = DateUtils.dateToTimeString(dateObject.endDate);
+				}
+				
+				if(dateObject.endDate == null) {
+					return [new ValidationResult(true, "date", "invalid-date", "The end date is required")];
+				}
+				
+				if(!dateObject.allDay) {
+					// Correct dates with start and end time before comparing
+					
+					endTime = DateUtils.timestringToDate(dateObject.endTime);
+					dateObject.endDate.setTime(dateObject.endDate.getTime() + endTime.getTime());
+				}
+				
+				if(dateObject.startDate.getTime() >= dateObject.endDate.getTime()) {
+					return [new ValidationResult(true, "date", "invalid-date", "The end date cannot be before the starting date")];
+				}
+				
+				return [new ValidationResult(false)];
+			}
+			
+			public function get pristine():Boolean {
+				return _pristine;
+			}
+
+		]]>
+	</mx:Script>
+	
+	<mx:Label text="From:" width="160" />
+	
+	<components:BrightDateField
+		width="100"
+		change="start_df_changeHandler(event)"
+		selectedDate="{dateObject.startDate}"
+		id="start_df" />
+	
+	<components:BrightTextInput
+		width="50"
+		id="starttime_txt"
+		errorColor="#ff0000"
+		placeHolder="HH:MM"
+		restrict="[0-9:]"
+		focusOut="starttime_txt_changeHandler(event)"
+		enabled="{!allday_chb.selected}"
+		maxChars="5"
+		text="{dateObject.startTime}" />
+	
+	<mx:Label text="To:" textAlign="right" width="50" />
+	
+	<components:BrightDateField
+		width="100"
+		change="end_df_changeHandler(event)"
+		selectedDate="{dateObject.endDate}"
+		disabledRanges="{[{rangeEnd:startRange}]}"
+		id="end_df" />
+	
+	<components:BrightTextInput
+		width="50"
+		focusOut="endtime_txt_changeHandler(event)"
+		restrict="[0-9:]"
+		placeHolder="HH:MM"
+		maxChars="5"
+		id="endtime_txt"
+		enabled="{!calendarDateObject.allday}"
+		text="{dateObject.endTime}" />
+	
+	<mx:CheckBox
+		selected="{dateObject.allDay}"
+		change="allday_chb_changeHandler(event)"
+		id="allday_chb"
+		label="All day" />
+	
+	<mx:CheckBox
+		selected="{dateObject.noEndTime}"
+		change="noend_chb_changeHandler(event)"
+		id="noend_chb"
+		label="No end time" />
+	
+	<mx:Spacer width="100%" />
+	
+<!--	
+	<validators:TimeValidator
+		id="startTimeValidator"
+		source="{starttime_txt}"
+		property="text"
+		trigger="{starttime_txt}"
+		triggerEvent="focusOut"/>
+	
+	<validators:TimeValidator
+		id="endTimeValidator"
+		source="{endtime_txt}"
+		property="text"
+		trigger="{endtime_txt}"
+		triggerEvent="focusOut"/>
+-->	
+</mx:HBox>

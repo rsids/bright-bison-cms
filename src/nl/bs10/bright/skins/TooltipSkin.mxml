@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicRectangularBorderSkin
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns="http://www.degrafa.com/2007"
+	width="400" 
+	height="300" 
+	xmlns:geometry="com.degrafa.geometry.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.skins.palettes.Palette;
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+				super.updateDisplayList(unscaledWidth, unscaledHeight);
+			}
+
+		]]>
+	</mx:Script>
+	
+	<fills>
+		
+		<LinearGradientFill angle="90" id="bg_gradient">
+			<GradientStop ratio="0" color="#ffffff" alpha=".99" />
+			<GradientStop ratio="1" color="#ffffff" alpha=".88" />
+		</LinearGradientFill>
+		
+	</fills>
+	
+	<geometry>
+<!--		<RoundedRectangle
+			cornerRadius="3"
+-->
+	<BezierSpline
+		<BoxArrowBasicAutoShape
+			
+			width="{skinWidth}"
+			height="{skinHeight}"
+			filters="{[Palette.instance.filters.button_over]}"
+			stroke="{Palette.instance.strokes.blue_gradient_stroke}"
+			fill="{bg_gradient}" />
+			
+	</geometry>
+	
+</GraphicRectangularBorderSkin>

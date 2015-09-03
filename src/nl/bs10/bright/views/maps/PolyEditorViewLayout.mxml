@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PolyEditorView
+	styleName="borderedBox"
+	width="100%"
+	height="100%"
+	horizontalScrollPolicy="off"
+	xmlns="nl.bs10.bright.views.maps.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.brightlib.objects.PolyPage;
+			import nl.bs10.brightlib.controllers.IconController;
+			import nl.bs10.bright.model.Model;
+			import mx.managers.PopUpManager;
+		]]>
+	</mx:Script>
+	
+		<mx:Canvas
+			height="104"
+			horizontalScrollPolicy="off"
+			verticalScrollPolicy="off"
+			styleName="headerBar"
+			width="100%">
+			
+			<components:ShadowedLabel
+				y="16"
+				x="44"
+				styleName="h2"
+				text="{contentVO.currentItem.label}" />
+				
+			<mx:HBox
+				y="16"
+				right="16">
+		
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					click="cancel()"
+					label="Cancel" />
+					
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					click="save()"
+					label="Save" />
+				
+			</mx:HBox>
+			
+			<mx:TabBar
+				x="44"
+				bottom="0"
+				labelField="label"
+				dataProvider="{contentVO.tabs}"
+				itemClick="setViewStack(event)"
+				id="lang_tb" />
+			
+		</mx:Canvas>
+		
+		<mx:ViewStack
+			id="item_vs"
+			styleName="editorVs"
+			width="100%"
+			height="100%">
+			
+			<mx:Grid
+				paddingLeft="44"
+				paddingTop="28"
+				horizontalGap="5"
+				verticalGap="20"
+				width="100%"
+				height="100%">
+				
+				<mx:GridRow
+					width="100%">
+					
+					<mx:GridItem width="160"> <mx:Label text="Select template:" /> </mx:GridItem>
+					<mx:GridItem width="100%">
+						
+						<mx:ComboBox
+							prompt="page template"
+							width="300"
+							rowCount="10"
+							itemRenderer="nl.bs10.bright.views.renderers.TemplateDefRenderer"
+							change="typeChangeHandler(event)"
+							dataProvider="{Model.instance.templateVO.markerDefinitions}"
+							toolTip="To create new content, first select the type of content you want to create"
+							labelField="templatename"
+							id="types_cmb" />
+						
+						<mx:TextInput
+							visible="false"
+							includeInLayout="false"
+							text="{contentVO.currentItem.label}"
+							id="label_txt" />
+						
+					</mx:GridItem>
+					
+				</mx:GridRow>
+				
+				<mx:GridRow>
+					
+					
+					<mx:GridItem width="160"> <mx:Label text="Layer:" /> </mx:GridItem>
+					<mx:GridItem width="100%">
+						
+						<mx:ComboBox
+							prompt="Layer"
+							width="300"
+							rowCount="10"
+							dataProvider="{Model.instance.markerVO.alayers}"
+							labelField="label"
+							id="layer_cmb" />
+						
+					</mx:GridItem>
+					
+				</mx:GridRow>
+				
+				<mx:GridRow>
+					
+					<mx:GridItem width="160"> <mx:Label text="Enabled:" /> </mx:GridItem>
+					<mx:GridItem width="100%">
+						
+						<mx:CheckBox
+							selected="{PolyPage(contentVO.currentItem).enabled}"
+							id="enabled_chb" />
+						
+					</mx:GridItem>
+					
+				</mx:GridRow>
+				
+				<mx:GridRow>
+					
+					<mx:GridItem width="160"> <mx:Label text="Color:" /> </mx:GridItem>
+					<mx:GridItem width="100%">
+						<mx:HBox width="100%">
+							
+							<mx:ColorPicker
+								selectedColor="{uint(PolyPage(contentVO.currentItem).color)}"
+								enabled="{!layercolor_chb.selected}"
+								id="color_cp" />
+							
+							<mx:CheckBox
+								selected="{PolyPage(contentVO.currentItem).uselayercolor}"
+								label="Use layer color"
+								id="layercolor_chb" />	
+							
+						</mx:HBox>
+						
+					</mx:GridItem>
+					
+				</mx:GridRow>
+				
+			</mx:Grid>
+			
+		</mx:ViewStack>
+		
+</PolyEditorView>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ChooseUserGroupView
+	xmlns="nl.bs10.bright.views.structure.*"
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	title="Choose User group(s)"
+	addedToStage="getUserGroups()"
+	verticalScrollPolicy="off"
+	horizontalScrollPolicy="off"
+	layout="vertical"
+	verticalGap="0"
+	width="350" 
+	height="500">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.model.Model;
+		]]>
+	</mx:Script>
+	
+	<mx:HBox
+		height="60"
+		styleName="headerBar"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		id="buttons_hb"
+		width="329">
+		
+		<mx:Button label="Cancel" click="close()" />
+		<mx:Button label="Save" click="save()" />
+		
+	</mx:HBox>
+	
+	<!-- Inside canvas, otherwise degrafa fucks up when scrolling -->
+	<mx:Canvas
+		styleName="editorVs"
+		height="100%"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		width="329">
+		
+		<mx:List
+			x="10"
+			y="10"
+			id="ug_lst"
+			width="309"
+			height="350"
+			dataProvider="{Model.instance.userVO.usergroups}"
+			labelField="groupname" />
+			
+		<mx:Label
+			x="10"
+			y="360"
+			text="Hold down the CTRL key to select multiple groups" />
+			
+	</mx:Canvas>
+	
+</ChooseUserGroupView>

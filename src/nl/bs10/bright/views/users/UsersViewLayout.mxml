@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UsersView
+	creationComplete="usersview1_creationCompleteHandler(event)"
+	xmlns="nl.bs10.bright.views.users.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	styleName="borderedBox"
+	show="showHandler()"
+	width="100%" 
+	height="100%" 
+	xmlns:components="nl.bs10.brightlib.components.*" 
+	xmlns:components1="nl.bs10.bright.components.*">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.brightlib.controllers.IconController;
+
+		]]>
+	</mx:Script>
+	
+	<mx:VBox
+		id="dg_vbox"
+		borderColor="#929292"
+		borderStyle="solid"
+		styleName="border"
+		backgroundColor="#ffffff"
+		width="25%"
+		height="100%">
+		
+	
+		<components1:BrightDataGrid
+			width="100%" 
+			settingsname="user"
+			height="100%"
+			editItem="editUser()"
+			deleteItem="deleteUser()"
+			id="users_dg"
+			styleName="noborder"
+			doubleClickEnabled="true"
+			doubleClick="editUser()"
+			dataProvider="{Model.instance.userVO.ausers}" />
+			
+		
+		<components:IconBox
+			bottom="0"
+			styleName="borderTop">
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('add')}" 
+				toolTip="Add User" 
+				click="addUser()" />
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('pencil')}" 
+				click="editUser()"
+				toolTip="Edit User"
+				enabled="{users_dg.selectedItem}" />
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('trash')}" 
+				toolTip="Delete User" 
+				click="deleteUser()"
+				enabled="{users_dg.selectedItem}" />
+				
+			<components:GrayImageButton
+				source="{IconController.getGray('download')}" 
+				toolTip="Download CSV"
+				click="downloadCSV()" />
+				
+			<components:GrayImageButton
+				source="{IconController.getGray('upload')}" 
+				toolTip="Upload CSV"
+				click="uploadCSV()" />
+				
+			<components:GrayImageButton
+				source="{IconController.getGray('filter')}" 
+				mode="toggle"
+				toggle="{Model.instance.userVO.showDeleted}"
+				toolTip="{Model.instance.userVO.showDeleted ? 'Hide deleted' : 'Show deleted'}"
+				click="Model.instance.userVO.showDeleted = !Model.instance.userVO.showDeleted" />
+				
+			<components:GrayImageButton
+				source="{IconController.getGray('usergroup')}" 
+				toolTip="Manage Usergroups"
+				click="openGroupEditor()" />
+				
+			<components:GrayImageButton
+				source="{IconController.getGray('cog')}" 
+				toolTip="Edit visible columns"
+				click="editColumns()" />
+		</components:IconBox>
+	
+	</mx:VBox>
+	
+	<UserEditorViewLayout
+		width="75%"
+		height="100%"
+		id="userView"
+		contentVO="{Model.instance.userVO}"
+		visible="{Model.instance.userVO.currentUser != null}"
+		includeInLayout="{Model.instance.userVO.currentUser != null}" />
+				
+</UsersView>

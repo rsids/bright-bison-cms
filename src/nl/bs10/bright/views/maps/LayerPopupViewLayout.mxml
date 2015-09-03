@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LayerPopupView 
+	title="Choose Layer(s)"
+	xmlns="nl.bs10.bright.views.maps.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="300" 
+	layout="absolute"
+	height="400">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.model.Model;
+		]]>
+	</mx:Script>
+	
+	<mx:Canvas
+		width="100%"
+		height="100%"
+		styleName="borderedBox">
+	
+		<mx:Button
+			id="cancel_btn"
+			x="{add_btn.x - (cancel_btn.width + 10)}"
+			label="Cancel"
+			click="close()" />
+	
+		<mx:Button
+			right="0"
+			id="add_btn"
+			label="Select layer(s)"
+			click="addLayers()" />
+		
+		<mx:DataGrid
+			top="40"
+			bottom="0" 
+			left="0"
+			right="0"
+			allowMultipleSelection="{multiple}"
+			id="layers_dg"
+			dataProvider="{Model.instance.markerVO.alayers}">
+			
+			<mx:columns>
+			
+				<mx:DataGridColumn
+					editable="false"
+					resizable="false"
+					width="20">
+					<mx:itemRenderer>
+						<mx:Component>
+							<mx:Canvas
+								width="100%"
+								height="100%"
+								horizontalScrollPolicy="off"
+								verticalScrollPolicy="off">
+								
+								<mx:Canvas
+									x="2"
+									y="2"
+									cornerRadius="3"
+									width="13"
+									height="13"
+									borderThickness="1"
+									borderStyle="solid"
+									borderColor="{data.color}"
+									backgroundColor="{data.color}" />
+							
+							</mx:Canvas>
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				
+				<mx:DataGridColumn
+					editable="false"
+					headerText="Label"
+					dataField="label" />
+				
+			</mx:columns>
+			
+		</mx:DataGrid>
+		
+	</mx:Canvas>
+		
+	
+</LayerPopupView>

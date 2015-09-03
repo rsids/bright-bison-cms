@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicBorderSkin
+	xmlns:mx="http://www.adobe.com/2006/mxml"  
+	xmlns="http://www.degrafa.com/2007" >
+	
+	<mx:Script>
+		<![CDATA[
+			import com.degrafa.GraphicPoint;
+			import nl.bs10.bright.skins.palettes.Palette;
+			override public function get measuredWidth():Number {
+				return 16;
+			}
+
+			override public function get measuredHeight():Number {
+				return 16;
+			}
+			
+			private var _upArrow:Array = [new GraphicPoint(0,5), new GraphicPoint(9,5), new GraphicPoint(4.5,0)];
+			private var _downArrow:Array = [new GraphicPoint(0,0), new GraphicPoint(9,0), new GraphicPoint(4.5,5)];
+		]]>
+	</mx:Script>
+	
+	<!-- All the Polygons, points, and GraphicPoints below are just drawing triangles -->
+	
+	<geometry>
+<!--		<GeometryComposition>
+			<RegularRectangle
+				fill="{Palette.instance.fills.scroll_background_fill}"
+				width="{skinWidth}"
+				height="{skinHeight}" />
+			
+		</GeometryComposition>-->
+		
+		<GeometryComposition
+			state="upArrowUpSkin">
+			
+			<RoundedRectangle
+				width="{skinWidth}"
+				height="{skinHeight}"
+				cornerRadius="0"
+				fill="{Palette.instance.fills.scroll_background_fill}" />
+			
+			<Polygon 
+				fill="{Palette.instance.fills.solid_dark_brown}"
+				x="4"
+				points="{_upArrow}"
+				y="4" />
+			
+		</GeometryComposition>
+
+		<GeometryComposition
+			state="upArrowOverSkin">
+			
+			<RoundedRectangle
+				width="{skinWidth}"
+				height="{skinHeight}"
+				cornerRadius="0"
+				fill="{Palette.instance.fills.scroll_over_fill}" />
+			
+			<Polygon 
+				fill="{Palette.instance.fills.solid_dark_blue}"
+				points="{_upArrow}"
+				x="4"
+				y="4" />
+			
+		</GeometryComposition>
+
+		<GeometryComposition
+			state="upArrowDownSkin">
+			
+			<RoundedRectangle
+				width="{skinWidth}"
+				height="{skinHeight}"
+				cornerRadius="0"
+				fill="{Palette.instance.fills.scroll_over_fill}" />
+			
+			<Polygon 
+				fill="{Palette.instance.fills.solid_dark_blue}"
+				x="4"
+				y="4"
+				points="{_upArrow}" />
+			
+		</GeometryComposition>
+
+		<GeometryComposition
+			state="upArrowDisabledSkin">
+			
+			<RoundedRectangle
+				width="{skinWidth}"
+				height="{skinHeight}"
+				cornerRadius="0"
+				fill="{Palette.instance.fills.scroll_background_fill}" />
+			
+			<Polygon 
+				fill="{Palette.instance.fills.solid_light_brown}"
+				x="4"
+				y="4"
+				points="{_upArrow}" />
+			
+		</GeometryComposition>
+		
+		<GeometryComposition
+			state="downArrowUpSkin">
+			
+			<RoundedRectangle
+				width="{skinWidth}"
+				height="{skinHeight}"
+				cornerRadius="0"
+				fill="{Palette.instance.fills.scroll_background_fill}" />
+			
+			<Polygon 
+				fill="{Palette.instance.fills.solid_dark_brown}" 
+				x="4"
+				y="4"
+				points="{_downArrow}" />
+			
+		</GeometryComposition>
+		
+		<GeometryComposition
+			state="downArrowOverSkin">
+			
+			<RoundedRectangle
+				width="{skinWidth}"
+				height="{skinHeight}"
+				cornerRadius="0"
+				fill="{Palette.instance.fills.scroll_over_fill}" />
+			
+			<Polygon 
+				fill="{Palette.instance.fills.solid_dark_blue}" 
+				x="4"
+				y="4"
+				points="{_downArrow}" />
+			
+		</GeometryComposition>
+		
+		<GeometryComposition
+			state="downArrowDownSkin">
+			
+			<RoundedRectangle
+				width="{skinWidth}"
+				height="{skinHeight}"
+				cornerRadius="0"
+				fill="{Palette.instance.fills.scroll_over_fill}" />
+			
+			<Polygon 
+				fill="{Palette.instance.fills.solid_dark_blue}" 
+				x="4"
+				y="4"
+				points="{_downArrow}" />
+			
+		</GeometryComposition>
+		
+		<GeometryComposition
+			state="downArrowDisabledSkin">
+			
+			<RoundedRectangle
+				width="{skinWidth}"
+				height="{skinHeight}"
+				cornerRadius="0"
+				fill="{Palette.instance.fills.scroll_background_fill}" />
+			
+			<Polygon 
+				fill="{Palette.instance.fills.solid_light_brown}" 
+				x="4"
+				y="4"
+				points="{_downArrow}" />
+			
+		</GeometryComposition>
+		
+	</geometry>
+</GraphicBorderSkin>

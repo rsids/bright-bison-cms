@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MapsView 
+	xmlns="nl.bs10.bright.views.maps.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*">
+
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.brightlib.controllers.IconController;
+
+		]]>
+	</mx:Script>
+		
+		<mx:Canvas
+			borderColor="#929292"
+			borderStyle="solid"
+			borderThickness="1"
+			backgroundColor="#ffffff"
+			horizontalScrollPolicy="off"
+			verticalScrollPolicy="off"
+			height="100%"
+			width="230">
+			
+			<mx:Canvas
+				width="100%"
+				top="0"
+				bottom="43">
+				
+				<mx:DataGrid
+					styleName="noborder"
+					id="layers_dg"
+					doubleClickEnabled="true"
+					itemDoubleClick="openLayerEditor(event)"
+					showHeaders="false"
+					width="100%"
+					height="100%"
+					selectedIndex="0"
+					itemClick="updateSelectedLayer()"
+					sortableColumns="false"
+					itemEditBeginning="checkField(event);"
+					itemEditEnd="layersChanged(event)"
+					dragEnabled="true"
+					dropEnabled="true"
+					dragMoveEnabled="true"
+					dataProvider="{Model.instance.markerVO.alayers}"
+					editable="true">
+					
+					<mx:columns>
+
+						<mx:DataGridColumn
+							width="18"
+							rendererIsEditor="true"
+							resizable="false"
+							editorDataField="selected"
+							
+							headerText="">
+							<mx:itemRenderer>
+								<mx:Component>
+									<mx:CheckBox paddingLeft="2" click="data.visible=!data.visible;" selected="{data.visible}" toolTip="{data.layerId}"/>
+								</mx:Component>						
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+						
+						<mx:DataGridColumn
+							width="80"
+							editable="false"
+							headerText="Layer"
+							dataField="label" />
+							
+						<mx:DataGridColumn
+							width="32"
+							rendererIsEditor="true"
+							resizable="false"
+							editorDataField="value"
+							headerText="">
+							<mx:itemRenderer>
+								<mx:Component>
+			            			<mx:HBox horizontalAlign="center" horizontalScrollPolicy="off" verticalScrollPolicy="off" >
+										<mx:Script>
+					            			<![CDATA[
+					            				private var _data:Object;
+					            				
+												public function get value():uint {
+													return data.color;
+												}
+												[Bindable]
+												override public function set data(value:Object):void {
+													super.data = value;
+													_data = value;
+													if(dg_cp && data && data.hasOwnProperty("color"))
+														dg_cp.selectedColor = data.color;
+												}
+												
+												override public function get data():Object {
+													return _data;
+												}
+												
+											]]>
+										</mx:Script>
+										<mx:ColorPicker selectedColor="{data.color}" id="dg_cp" valueCommit="{data.color = dg_cp.selectedColor}" />
+			            			</mx:HBox>
+								</mx:Component>						
+							</mx:itemRenderer>
+						</mx:DataGridColumn>
+							
+					</mx:columns>
+					
+				</mx:DataGrid>
+					
+			</mx:Canvas>
+			
+			<components:IconBox 
+				id="grayIconBar"
+				bottom="0">
+				<components:GrayImageButton 
+					source="{IconController.getGray('add')}" 
+					toolTip="Add layer" 
+					click="openLayerEditor()" />
+				
+				<components:GrayImageButton 
+					source="{IconController.getGray('pencil')}" 
+					toolTip="Edit layer"
+					enabled="{layers_dg.selectedItem}" 
+					click="openLayerEditor(event)" />
+				
+				<components:GrayImageButton 
+					source="{IconController.getGray('trash')}" 
+					enabled="{layers_dg.selectedItem}"
+					click="deleteLayer()"
+					toolTip="Delete layer"  />
+				
+				<mx:Spacer width="100%" />
+				
+				<components:GrayImageButton
+					toolTip="To list mode"
+					id="listBtn"
+					visible="{displayMode == 'map'}"
+					includeInLayout="{displayMode == 'map'}"
+					click="setDisplayMode('list')"
+					source="{IconController.getGray('list')}" />
+				
+				<components:GrayImageButton
+					toolTip="To map mode"
+					visible="{displayMode == 'list'}"
+					includeInLayout="{displayMode == 'list'}"
+					id="mapBtn"
+					click="setDisplayMode('map')"
+					source="{IconController.getGray('map')}" />
+			</components:IconBox>
+			
+			<!--<mx:Canvas
+				width="100%"
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				borderColor="#929292"
+				borderStyle="solid"
+				borderThickness="1"
+				height="43"
+				bottom="0"
+				borderSides="top"
+				backgroundColor="#eaeaea">
+				
+				<mx:HBox id="grayIconBar" styleName="grayIconBar" paddingLeft="14" paddingRight="14" verticalCenter="0" horizontalScrollPolicy="off">
+
+					
+						
+				</mx:HBox>
+				
+			</mx:Canvas>-->
+			
+		</mx:Canvas>
+		
+		<mx:Canvas
+			horizontalScrollPolicy="off"
+			verticalScrollPolicy="off"
+			width="100%"
+			height="100%">
+			
+			<mx:Canvas
+				x="0"
+				y="0"
+				creationComplete="loadMaps()"
+				width="100%"
+				height="100%"
+				visible="{displayMode == 'map'}"
+				includeInLayout="{displayMode == 'map'}"
+				id="maps_cvs">
+				
+			</mx:Canvas>
+			
+			<ListViewLayout
+				items="{Model.instance.mapsVO.items}"
+				visible="{displayMode == 'list'}"
+				mode="{ListView.NORMAL}"
+				includeInLayout="{displayMode == 'list'}" />
+			
+			
+			<MarkerEditorViewLayout
+				id="markerEditorView"
+				visible="{Model.instance.markerVO.currentItem != null}"
+				includeInLayout="{Model.instance.markerVO.currentItem != null}"
+				contentVO="{Model.instance.markerVO}"
+				width="100%"
+				height="100%" />
+				
+			<PolyEditorViewLayout
+				id="polyEditorView"
+				visible="{Model.instance.polyVO.currentItem != null}"
+				includeInLayout="{Model.instance.polyVO.currentItem != null}"
+				contentVO="{Model.instance.polyVO}"
+				width="100%"
+				height="100%" />
+			
+		</mx:Canvas>
+</MapsView>

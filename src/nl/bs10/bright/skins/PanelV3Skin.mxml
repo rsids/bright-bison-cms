@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicPanelSkin
+	xmlns="http://www.degrafa.com/2007"
+	xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.skins.palettes.Palette;
+		]]>
+	</mx:Script>
+	
+	<geometry>
+		
+		<RoundedRectangle
+			width="{skinWidth}"
+			height="{skinHeight}"
+			cornerRadius="{Palette.instance.base_radius}"
+			stroke="{Palette.instance.strokes.border_stroke}"
+			filters="{[Palette.instance.filters.popup_shadow]}"
+			fill="{Palette.instance.fills.background_fill}" />
+			
+	</geometry>
+	
+	
+</GraphicPanelSkin>

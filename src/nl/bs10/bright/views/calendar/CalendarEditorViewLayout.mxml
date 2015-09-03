@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CalendarEditorView 
+	styleName="borderedBox"
+	width="100%"
+	height="100%"
+	horizontalScrollPolicy="off"
+	show="onShow()"
+	xmlns="nl.bs10.bright.views.calendar.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*" 
+	xmlns:components1="nl.bs10.bright.components.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.bright.model.objects.CalendarEvent;
+			import nl.bs10.brightlib.controllers.IconController;
+		]]>
+	</mx:Script>
+	
+		<mx:Canvas
+			height="104"
+			horizontalScrollPolicy="off"
+			verticalScrollPolicy="off"
+			styleName="headerBar"
+			width="100%">
+			
+			<components:ShadowedLabel
+				y="16"
+				x="44"
+				styleName="h2"
+				text="{contentVO.currentItem.label}" />
+				
+			<mx:HBox
+				y="16"
+				right="16">
+		
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					click="cancel()"
+					label="Cancel" />
+								
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					visible="{CalendarEvent(contentVO.currentItem).calendarId != 0}"
+					includeInLayout="{CalendarEvent(contentVO.currentItem).calendarId != 0}"
+					click="saveas()"
+					label="Save As" />
+					
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					click="save()"
+					label="Save" />
+				
+			</mx:HBox>
+			
+			<mx:TabBar
+				x="44"
+				bottom="0"
+				labelField="label"
+				dataProvider="{contentVO.tabs}"
+				itemClick="setViewStack(event)"
+				id="lang_tb" />
+			
+		</mx:Canvas>
+		
+		<mx:ViewStack
+			id="item_vs"
+			styleName="editorVs"
+			width="100%"
+			height="100%">
+			
+			<mx:VBox
+				paddingLeft="43"
+				paddingTop="32"
+				paddingRight="20"
+				verticalGap="2"
+				width="100%"
+				height="100%">
+				
+				<mx:Grid paddingBottom="20">
+					
+					<mx:GridRow paddingBottom="2">
+						
+						<mx:GridItem width="160">
+							<mx:Label text="Select template:" />
+						</mx:GridItem>
+						
+						<mx:GridItem>
+							
+							<mx:ComboBox
+								prompt="page template"
+								width="300"
+								rowCount="10"
+								itemRenderer="nl.bs10.bright.views.renderers.TemplateDefRenderer"
+								change="typeChangeHandler(event)"
+								dataProvider="{Model.instance.templateVO.calendarDefinitions}"
+								toolTip="To create new content, first select the type of content you want to create"
+								labelField="templatename"
+								id="types_cmb" />
+							
+						</mx:GridItem>
+						
+						
+						
+					</mx:GridRow>
+							
+					<mx:GridRow paddingBottom="2">
+						
+						<mx:GridItem width="160">
+							<mx:Label text="Label:" />
+						</mx:GridItem>
+						
+						<mx:GridItem>
+							
+							<mx:Image
+								visible="{!label_txt.enabled}"
+								includeInLayout="{!label_txt.enabled}"
+								source="{IconController.getIcon('lock')}" />
+							
+							<mx:TextInput
+								text="{contentVO.currentItem.label}"
+								focusOut="updateLabel()"
+								id="label_txt" />
+							
+						</mx:GridItem>
+						
+					</mx:GridRow>
+					
+					<mx:GridRow paddingBottom="2">
+						
+						<mx:GridItem width="160">
+							<mx:Label text="Location:" />
+						</mx:GridItem>
+						
+						<mx:GridItem>
+							
+							<mx:ComboBox
+								prompt="location"
+								width="300"
+								rowCount="10"
+								itemRenderer="nl.bs10.bright.views.renderers.LocationRenderer"
+								dataProvider="{Model.instance.mapsVO.items}"
+								labelField="label"
+								id="location_cmb" />
+							
+							<components:GrayImageButton 
+								source="{IconController.getGray('search')}" 
+								toolTip="Search Location" 
+								click="searchLocation()" />
+							
+						</mx:GridItem>
+						
+					</mx:GridRow>
+					
+				</mx:Grid>
+				
+				<mx:VBox
+					verticalGap="2"
+					paddingBottom="20"
+					id="dates_vb"
+					width="100%"
+					childAdd="updateOverview(event)"
+					childRemove="updateOverview(event)">
+					
+					
+				</mx:VBox>
+				
+				
+				<mx:CheckBox
+					paddingLeft="169"
+					id="enabled_chb"
+					selected="{CalendarEvent(contentVO.currentItem).enabled}"
+					label="Enabled" />
+			
+				<mx:CheckBox
+					paddingLeft="169"
+					id="repeat_chb"
+					selected="{CalendarEvent(contentVO.currentItem).recur != ''}"
+					change="updateOverview()"
+					label="Repeating" />
+				
+				<mx:Canvas
+					paddingTop="20"
+					width="100%"
+					height="100%">
+					
+					
+					<mx:Label
+						text="Repeat every:"
+						visible="{repeat_chb.selected}"
+						y="6" />
+					
+					<mx:ComboBox
+						visible="{repeat_chb.selected}"
+						change="updateOverview()"
+						id="repeat_cmb"
+						prompt="[Please Select]"
+						dataProvider="{Model.instance.calendarVO.repeatoptions}"
+						labelField="label"
+						width="200"
+						x="160" />
+					
+					<mx:Canvas
+						visible="{repeat_chb.selected &amp;&amp; repeat_cmb.selectedIndex != -1}"
+						width="100%"
+						y="32"
+						x="0"
+						styleName="repeatitem">
+						
+						<mx:Label
+							x="43"
+							y="12"
+							text="Repeat every:"/>
+						
+						<mx:NumericStepper
+							minimum="1"
+							width="50"
+							x="160"
+							y="8"
+							maximum="999"
+							change="updateOverview()"
+							id="interval_ns" />
+						
+						<mx:Label
+							x="225"
+							y="12"
+							text="{repeat_cmb.selectedItem.plural + ' until: '}"/>
+						
+						<components:BrightDateField
+							x="325"
+							y="8"
+							width="100"
+							change="updateOverview()"
+							selectedDate="{CalendarEvent(contentVO.currentItem).fluntil}"
+							id="endrepeat_df" />
+						
+						<mx:ViewStack
+							id="repeat_vs"
+							selectedIndex="{repeat_cmb.selectedIndex}"
+							creationPolicy="all"
+							y="60"
+							x="43"
+							width="100%"
+							resizeToContent="true">
+							
+							<mx:HBox>
+								<!--Day has no additional properties -->
+							</mx:HBox>
+							
+							
+							<!--Week has additional properties -->
+							<mx:HBox
+								verticalAlign="middle"
+								width="100%">
+								
+								<mx:Label
+									width="112"
+									text="Repeat on:"/>
+								
+								<mx:CheckBox
+									change="updateOverview()"
+									id="sun_chb"
+									label="Sun" />
+								
+								<mx:CheckBox
+									change="updateOverview()"
+									id="mon_chb"
+									label="Mon" />
+								
+								<mx:CheckBox
+									change="updateOverview()"
+									id="tue_chb"
+									label="Tue" />
+								
+								<mx:CheckBox
+									change="updateOverview()"
+									id="wed_chb"
+									label="Wed" />
+								
+								<mx:CheckBox
+									change="updateOverview()"
+									id="thu_chb"
+									label="Thu" />
+								
+								<mx:CheckBox
+									change="updateOverview()"
+									id="fri_chb"
+									label="Fri" />
+								
+								<mx:CheckBox
+									change="updateOverview()"
+									id="sat_chb"
+									label="Sat" />
+								
+							</mx:HBox>
+							
+							
+							<mx:Canvas>
+								<!--Month has additional properties -->
+								<mx:RadioButtonGroup
+									change="updateOverview()"
+									id="repeatmonth_rbg" />
+								
+								<mx:Label
+									text="Repeat on:"/>
+								
+								<mx:RadioButton
+									x="112"
+									value="dom"
+									group="{repeatmonth_rbg}"
+									label="day of month" />
+								
+								<mx:RadioButton
+									x="112"
+									y="40"
+									group="{repeatmonth_rbg}"
+									value="dow"
+									label="day of week" />
+								<!--
+								<mx:CheckBox
+									x="220"
+									y="40"
+									id="eom_chb"
+									label="Calculate from end of month" />-->
+								
+							</mx:Canvas>
+							
+							<mx:HBox>
+								<!-- Year has no additional properties -->
+							</mx:HBox>
+							
+						</mx:ViewStack>
+						
+						<mx:Label
+							x="43"
+							y="{repeat_vs.height + repeat_vs.y + 10}"
+							paddingBottom="10"
+							text="Overview:" />
+						
+						<mx:Label
+							x="160"
+							fontWeight="bold"
+							y="{repeat_vs.height + repeat_vs.y + 10}"
+							text="{overview}" />
+						
+					</mx:Canvas>
+					
+				</mx:Canvas>
+			</mx:VBox>
+			
+		</mx:ViewStack>
+		
+</CalendarEditorView>

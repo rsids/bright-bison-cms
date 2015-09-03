@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TemplateEditView 
+	width="100%" 
+	height="100%" 
+	styleName="borderedBox"
+	horizontalScrollPolicy="off"
+	verticalScrollPolicy="off"
+	xmlns="nl.bs10.bright.views.templates.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:components="nl.bs10.brightlib.components.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import nl.fur.vein.controllers.CommandController;
+			import nl.bs10.brightlib.controllers.IconController;
+			import nl.bs10.bright.model.Model;
+		]]>
+	</mx:Script>
+			
+	<mx:HBox
+		width="100%"
+		styleName="headerBar"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		height="60">
+		
+		<mx:Button x="562" y="10" label="Cancel" click="close()" />
+		
+		<mx:Button x="562" y="10" enabled="{!Model.instance.applicationVO.commandExecuting}" label="Save As" click="saveTemplate(true)"/>
+		<mx:Button x="562" y="10" enabled="{!Model.instance.applicationVO.commandExecuting}" label="Save" click="saveTemplate()"/>
+		
+	</mx:HBox>
+	
+	<mx:Canvas
+		styleName="editorVs"
+		width="100%"
+		y="60"
+		height="128">
+		
+		<mx:Label text="Label:" x="10" y="11"/>
+		
+		<mx:TextInput 
+			id="label_txt" 
+			x="126" 
+			y="10" 
+			maxChars="255"
+			restrict="[a-z0-9\-_]"
+			change="checkDigit()"
+			text="{Model.instance.templateVO.selectedTemplate.itemtype}" 
+			width="202"/>
+
+		<mx:Label text="Displaylabel:" x="10" y="49"/>
+		
+		<mx:TextInput 
+			id="displaylabel_txt" 
+			x="126" 
+			y="48" 
+			maxChars="255"
+			text="{Model.instance.templateVO.selectedTemplate.templatename}" 
+			width="202"/>
+		
+		<mx:Label text="Icon:" x="357" y="11"/>
+		
+		<mx:Image 
+			x="473" 
+			y="14" 
+			id="icon_img"
+			source="{IconController.getIcon(Model.instance.templateVO.selectedTemplate, 'icon')}"
+			click="chooseIcon()" />
+		
+		<mx:Button
+			x="495" 
+			y="10" 
+			label="Change"
+			click="chooseIcon()" />
+			
+		<mx:Label text="Template type:" x="357" y="49"/>
+		
+		<mx:ComboBox 
+			x="473" 
+			y="48"
+			width="150" 
+			id="types_cmb" 
+			change="typeChanged()"
+			dataProvider="{Model.instance.templateVO.types}" 
+			selectedIndex="{Model.instance.templateVO.selectedTemplate.templatetype}" />
+			
+		<mx:Label 
+			text="URL parser:"
+			id="parser_lbl" 
+			x="357" 
+			y="87"/>
+		
+		<mx:ComboBox 
+			x="473" 
+			y="86"
+			width="150" 
+			id="parser_cmb"
+			dataProvider="{Model.instance.templateVO.parsers}" />
+		
+		<mx:Label text="Priority:" x="654" y="11"/>
+		
+		<mx:NumericStepper 
+			x="760" 
+			y="10" 
+			id="priority_ns" 
+			value="{Model.instance.templateVO.selectedTemplate.priority}" 
+			minimum="0" 
+			maximum="1" 
+			toolTip="Google Sitemap Priority"
+			stepSize=".1" 
+			width="129"/>
+		
+		<mx:Label text="Lifetime:" x="654" y="49"/>
+		
+		<mx:TextInput 
+			id="lifetime_txt" 
+			x="760" 
+			y="48" 
+			toolTip="Indicates when the cached page expires"
+			text="{Model.instance.templateVO.selectedTemplate.lifetime}" 
+			width="129"/>
+		
+		<mx:Label text="Max Children:" x="654" y="87"/>
+		
+		<mx:NumericStepper 
+			x="760" 
+			y="86" 
+			id="maxchildren_ns" 
+			toolTip="The number of children this page can have (-1 for unlimited)"
+			value="{Model.instance.templateVO.selectedTemplate.maxchildren}" 
+			minimum="-1" 
+			maximum="999" 
+			stepSize="1" 
+			width="129"/>
+		
+	</mx:Canvas>
+	
+	<mx:HBox
+		paddingBottom="5"
+		paddingLeft="5"
+		paddingRight="5"
+		paddingTop="5"
+		y="188"
+		styleName="headerBar"
+		verticalAlign="middle"
+		horizontalAlign="left"
+		width="100%">
+		
+		<mx:Label
+			width="150"
+			fontWeight="bold"
+			text="Fields:" />
+		
+		<components:GrayImageButton
+			source="{IconController.getGray('add')}"
+			click="addField()" />
+		
+	</mx:HBox>
+	
+	
+	<!-- Needs it's own f#$%ing canvas for correct scrolling -->
+	<mx:Canvas
+		top="219"
+		bottom="0"
+		styleName="editorVs"
+		horizontalScrollPolicy="off"
+		backgroundAlpha=".1"
+		backgroundColor="#ffffff"
+		width="100%">
+		
+		<mx:VBox 
+			width="100%"
+			height="100%"
+			horizontalScrollPolicy="off"
+			verticalScrollPolicy="off"
+			id="fields_vb">
+			
+		</mx:VBox>
+	</mx:Canvas>
+			
+		
+	
+</TemplateEditView>

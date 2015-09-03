@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings:DataGridSettingsView 
+	title="Edit visible columns"
+	showCloseButton="true"
+	close="datagridsettingsview1_closeHandler(event)"
+	layout="vertical" 
+	width="400" 
+	height="350" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:settings="nl.bs10.bright.views.settings.*" 
+	xmlns:components="nl.bs10.bright.components.*">
+	
+	<mx:Text
+		width="100%"
+		text="{'Drag an item to the \'visible columns\' list to add it to the table ' + String.fromCharCode(13) +  'For some fields you need to refresh the page to become visible'}"  />
+	
+	<components:DataGridSettings
+		visibleColumnsSetting="{visibleColumns}"
+		allColumns="{availableColumns}" />
+	
+</settings:DataGridSettingsView>

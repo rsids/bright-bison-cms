@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<collections:FilterCollection
+	xmlns="http://www.degrafa.com/2007"
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+    xmlns:collections="com.degrafa.core.collections.*">
+	
+	<mx:DropShadowFilter id="popup_shadow" alpha=".6" angle="90" color="#3a3a3a" distance="3" strength="1" blurX="30" blurY="20" />
+	<mx:DropShadowFilter id="panel_shadow" alpha=".4" angle="90" color="#979797" distance="1"  blurX="4" blurY="4" />
+	<mx:DropShadowFilter id="scroll_thumb" alpha=".15" angle="10" color="#666" distance="1" blurX="1" blurY="1" quality="2" />
+	<mx:DropShadowFilter id="scroll_inner" alpha=".25" angle="-90" color="#000" distance="3" blurX="10" blurY="10" inner="true" quality="2" />
+	<mx:GlowFilter id="button_over" color="#868585" strength="1" blurX="4" blurY="4" quality="3" alpha=".8" />
+	
+</collections:FilterCollection>

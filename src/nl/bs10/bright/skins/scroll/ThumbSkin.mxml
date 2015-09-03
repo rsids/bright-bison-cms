@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicBorderSkin
+	xmlns:mx="http://www.adobe.com/2006/mxml"  
+	xmlns="http://www.degrafa.com/2007">
+
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.skins.palettes.Palette;
+	
+		
+			override public function get measuredWidth():Number {
+				return 16;
+			}
+			
+			override public function get measuredHeight():Number {
+				return 16;
+			}
+		]]>
+	</mx:Script>
+
+	<geometry>
+	
+		<GeometryComposition>
+			
+			<RoundedRectangle
+				id="thumbGeometry_upSkin"
+				cornerRadius="10"
+				fill="{Palette.instance.fills.scroll_thumb_fill}"
+				filters="{[Palette.instance.filters.scroll_thumb]}"
+				height="{skinHeight - 4}"
+				x="2"
+				y="2"
+				width="{skinWidth - 4}" />
+				
+		</GeometryComposition>
+	
+	</geometry>
+</GraphicBorderSkin>

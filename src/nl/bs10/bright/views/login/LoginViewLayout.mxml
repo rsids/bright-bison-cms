@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LoginView 
+	creationComplete="init()"
+	verticalCenter="0"
+	horizontalCenter="0"
+	verticalGap="10"
+	horizontalScrollPolicy="off"
+	verticalScrollPolicy="off"
+	horizontalAlign="right"
+	xmlns="nl.bs10.bright.views.login.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="440" 
+	height="201">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.model.Model;
+		]]>
+	</mx:Script>
+	
+	<mx:HBox width="100%" horizontalGap="20">
+	
+		<mx:Image
+			width="117"
+			height="117"
+			verticalAlign="bottom"
+			source="{Model.instance.applicationVO.logo}"
+			id="logo_img" />
+			
+		<mx:VBox width="100%">
+			
+			<mx:Label text="E-mail address:" styleName="h3" />
+			
+			<mx:TextInput 
+				width="100%"
+				text=""
+				enter="(password_txt.text == '') ? password_txt.setFocus() : login()"
+				id="email_txt" />
+
+		<mx:Label text="Password:" styleName="h3" />
+		
+		<mx:TextInput 
+			width="100%"
+			text=""
+			displayAsPassword="true"
+			enter="(email_txt.text == '') ? email_txt.setFocus() : login()"
+			id="password_txt" />
+
+		</mx:VBox>
+		
+			
+	</mx:HBox>
+	
+	<mx:HRule 
+		width="100%" />
+
+	<mx:HBox
+		width="100%">
+	
+		<mx:Label
+			color="#4f4f4f"
+			includeInLayout="false"
+			visible="false"
+			text="Forgot your password?" />
+			
+		<mx:Spacer
+			width="100%" />	
+	
+		<mx:Button
+			id="login_btn"
+			click="login()"
+			label="Login" />
+	
+	</mx:HBox>
+</LoginView>

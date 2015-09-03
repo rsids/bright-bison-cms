@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow 
+	layout="vertical"
+	showCloseButton="true"
+	verticalGap="0"
+	width="600" 
+	height="500" 
+	close="titlewindow1_closeHandler(event)"
+	title="Choose a marker"
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*" 
+	xmlns:maps="nl.bs10.bright.views.maps.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.CloseEvent;
+			import mx.events.FlexEvent;
+			import mx.managers.PopUpManager;
+			
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.bright.views.maps.ListView;
+			import nl.fur.vein.events.VeinDispatcher;
+			import nl.fur.vein.events.VeinEvent;
+			
+			private var _filter:Array;
+			private var _filterChanged:Boolean;
+			
+			public var callback:Function;
+			
+			protected function titlewindow1_closeHandler(event:CloseEvent = null):void {
+				PopUpManager.removePopUp(this);
+				filter = null;
+				callback = null;
+			}
+			
+			private function _onSelectMarker(event:VeinEvent):void {
+				callback(event.data);
+				titlewindow1_closeHandler();
+			}
+			
+			[Bindable(event="filterChanged")]
+			public function set filter(value:Array):void {
+				if(value !== _filter) {
+					_filter = value;
+					_filterChanged = true;
+					invalidateProperties();
+					dispatchEvent(new Event("filterChanged"));
+				}
+			}
+			
+			/** 
+			 * Getter/Setter methods for the filter property
+			 **/
+			public function get filter():Array {
+				return _filter;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<maps:ListViewLayout
+		mode="{ListView.POPUP}"
+		items="{Model.instance.mapsVO.items}"
+		selectMarker="_onSelectMarker(event)"
+		filter="{filter}"
+		width="100%"
+		height="100%"/>
+	
+</mx:TitleWindow>

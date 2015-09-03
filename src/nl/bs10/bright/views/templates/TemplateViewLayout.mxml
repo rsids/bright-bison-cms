@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TemplateView 
+	width="100%" 
+	height="100%" 
+	xmlns="nl.bs10.bright.views.templates.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*" 
+	xmlns:components1="nl.bs10.bright.components.*">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.brightlib.controllers.IconController;
+		]]>
+	</mx:Script>
+	
+	<mx:VBox
+		id="dg_vbox"
+		borderColor="#929292"
+		borderStyle="solid"
+		styleName="border"
+		backgroundColor="#ffffff"
+		width="25%"
+		height="100%">
+		
+		
+		<components1:BrightDataGrid
+			paste="pasteTemplate(event)"
+			width="100%"
+			height="100%"
+			editable="true"
+			id="templates_dg"
+			styleName="noborder"
+			doubleClickEnabled="true"
+			itemDoubleClick="editDefinition()"
+			itemEditEnd="saveChanges(event)"
+			dataProvider="{Model.instance.templateVO.rawTemplateDefinitions}" >
+			
+			<components1:columns>
+				
+				<mx:DataGridColumn
+					editable="false"
+					itemRenderer="nl.bs10.brightlib.components.renderers.IconRenderer"
+					dataField="icon"
+					width="22"
+					resizable="false"
+					headerText="" />
+				
+				<mx:DataGridColumn
+					width="42"
+					editable="false"
+					headerText="ID #"
+					dataField="id" />
+				
+				<mx:DataGridColumn
+					editable="false"
+					headerText="Label"
+					dataField="itemtype" />
+				
+				<mx:DataGridColumn
+					editable="false"
+					headerText="Displaylabel"
+					visible="{!Model.instance.templateVO.selectedTemplate}"
+					dataField="templatename" />
+				
+				<mx:DataGridColumn
+					headerText="Type"
+					width="110"
+					editable="false"
+					visible="{!Model.instance.templateVO.selectedTemplate}"
+					labelFunction="getTemplatetype"
+					dataField="templatetype"/>
+				
+				<mx:DataGridColumn
+					editable="true"
+					width="200"
+					rendererIsEditor="true"
+					editorDataField="value"
+					editorUsesEnterKey="false"
+					headerText="Max Children"
+					visible="{!Model.instance.templateVO.selectedTemplate}"
+					dataField="maxchildren">
+					
+					<mx:itemRenderer>
+						
+						<mx:Component>
+							<mx:NumericStepper
+								minimum="-1"
+								maximum="999"
+								stepSize="1" />
+						</mx:Component>
+						
+					</mx:itemRenderer>
+					
+				</mx:DataGridColumn>
+				
+				<mx:DataGridColumn
+					editable="true"
+					width="200"
+					editorDataField="text"
+					editorUsesEnterKey="false"
+					headerText="Lifetime"
+					visible="{!Model.instance.templateVO.selectedTemplate}"
+					dataField="lifetime" />
+				
+			</components1:columns>
+			
+		</components1:BrightDataGrid>
+		
+		
+		<components:IconBox
+			bottom="0"
+			styleName="borderTop">
+				
+			<components:GrayImageButton 
+				source="{IconController.getGray('add')}" 
+				toolTip="New Template" 
+				click="newTemplate()" />
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('pencil')}" 
+				click="editDefinition()"
+				toolTip="Edit Template"
+				enabled="{templates_dg.selectedItem}" />
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('trash')}" 
+				toolTip="Delete Template" 
+				click="deleteTemplate()"
+				enabled="{templates_dg.selectedItem}" />
+			
+			<components:GrayImageButton 
+				toolTip="Flush Cache"
+				source="{IconController.getGray('thunder')}" 
+				click="flushCache()" />
+			
+			<components:GrayImageButton 
+				toolTip="Copy Template"
+				source="{IconController.getGray('copy')}" 
+				click="copyTemplate()" 
+				enabled="{templates_dg.selectedItem}" />
+			
+			<!--<components:GrayImageButton 
+				toolTip="Paste Template"
+				source="{IconController.getGray('paste')}" 
+				click="pasteTemplate()" />-->
+		</components:IconBox>
+		
+	</mx:VBox>
+
+	<TemplateEditViewLayout
+		width="75%"
+		height="100%"
+		visible="{Model.instance.templateVO.selectedTemplate != null}"
+		includeInLayout="{Model.instance.templateVO.selectedTemplate != null}"
+		id="templateEditView" />
+	<!--
+	<mx:ViewStack
+		selectedIndex="{Model.instance.templateVO.templateState}"
+		width="100%" 
+		height="100%">
+					
+		<TemplateListViewLayout
+			horizontalScrollPolicy="off"
+			verticalScrollPolicy="off"
+			viewId="templateListView" />
+			
+		
+	</mx:ViewStack>-->
+	
+</TemplateView>

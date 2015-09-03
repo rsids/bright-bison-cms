@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AdminView 
+	width="100%" 
+	height="100%" 
+	show="showHandler()"
+	xmlns="nl.bs10.bright.views.administrators.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.utils.ArrayUtil;
+			
+			import nl.bs10.bright.controllers.PermissionController;
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.brightlib.controllers.IconController;
+		]]>
+	</mx:Script>
+	<mx:HDividedBox
+		top="10"
+		left="0"
+		right="0"
+		bottom="0"
+		horizontalGap="20"
+		width="100%"
+		height="100%">
+		
+		<mx:Canvas
+			borderColor="#929292"
+			borderStyle="solid"
+			styleName="border"
+			backgroundColor="#ffffff"
+			horizontalScrollPolicy="off"
+			verticalScrollPolicy="off"
+			height="100%"
+			width="23%">
+			
+			<mx:DataGrid
+				styleName="noborder"
+				dataProvider="{Model.instance.administratorVO.administrators}"
+				doubleClickEnabled="true"
+				itemDoubleClick="editAdministrator()"
+				id="users_dg" 
+				width="100%"
+				top="0"
+				bottom="43">
+				
+				<mx:columns>
+					<mx:DataGridColumn
+						headerText="ID"
+						width="24"
+						dataField="id" />
+					
+					<mx:DataGridColumn
+						headerText="Username" 
+						dataField="name" />
+						
+					<mx:DataGridColumn
+						headerText="E-mail"
+						dataField="email" />
+						
+				</mx:columns>
+		
+			</mx:DataGrid>
+			
+			<components:IconBox
+				bottom="0"
+				styleName="borderTop">
+				
+				<components:GrayImageButton 
+					visible="{PermissionController.instance._MANAGE_ADMIN}"
+					includeInLayout="{PermissionController.instance._MANAGE_ADMIN}"
+					source="{IconController.getGray('add')}" 
+					click="addAdministrator()"
+					toolTip="Add Administrator" />
+				
+				<components:GrayImageButton 
+					source="{IconController.getGray('pencil')}" 
+					click="editAdministrator()"
+					toolTip="Edit Administrator"
+					enabled="{users_dg.selectedItem}" />
+				
+				<components:GrayImageButton 
+					source="{IconController.getGray('trash')}" 
+					toolTip="Delete Administrator"
+					click="deleteAdministrator()" 
+					visible="{PermissionController.instance._MANAGE_ADMIN}"
+					includeInLayout="{PermissionController.instance._MANAGE_ADMIN}"
+					enabled="{users_dg.selectedItem}"  />
+	
+			</components:IconBox>
+			
+		</mx:Canvas>
+		
+		<mx:Canvas
+			width="100%"
+			height="100%">
+			
+			<EditAdminViewLayout
+				visible="{Model.instance.administratorVO.editAdministrator != null}"
+				id="editUserView"
+				width="100%"
+				height="100%" />
+				
+		</mx:Canvas>
+	
+	</mx:HDividedBox>
+	
+</AdminView>

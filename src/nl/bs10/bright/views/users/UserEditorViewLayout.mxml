@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserEditorView 
+	styleName="borderedBox"
+	width="100%"
+	height="100%"
+	horizontalScrollPolicy="off"
+	xmlns="nl.bs10.bright.views.users.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.model.objects.CalendarEvent;
+			import nl.bs10.brightlib.controllers.IconController;
+			import nl.bs10.bright.model.Model;
+			import mx.managers.PopUpManager;
+			
+		]]>
+	</mx:Script>
+	
+		<mx:Canvas
+			height="104"
+			horizontalScrollPolicy="off"
+			verticalScrollPolicy="off"
+			styleName="headerBar"
+			width="100%">
+			
+			<components:ShadowedLabel
+				y="16"
+				x="44"
+				styleName="h2"
+				text="{contentVO.currentItem.label}" />
+				
+			<mx:HBox
+				y="16"
+				right="16">
+		
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					click="cancel()"
+					label="Cancel" />
+			
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					visible="{contentVO.currentItem.pageId != 0}"
+					includeInLayout="{contentVO.currentItem.pageId != 0}"
+					click="saveas()"
+					label="Save As" />
+					
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					click="save()"
+					label="Save" />
+				
+			</mx:HBox>
+			
+			<mx:TabBar
+				x="44"
+				bottom="0"
+				labelField="label"
+				dataProvider="{contentVO.tabs}"
+				itemClick="setViewStack(event)"
+				id="lang_tb" />
+			
+		</mx:Canvas>
+		
+		<mx:ViewStack
+			id="item_vs"
+			creationPolicy="all"
+			styleName="editorVs"
+			width="100%"
+			height="100%">
+			
+			<mx:Canvas
+				horizontalScrollPolicy="off"
+				width="100%"
+				height="100%">
+				
+				<mx:Label
+					x="10"
+					y="12"
+					visible="{types_cmb.visible}"
+					text="Select template:" />
+				
+				<mx:ComboBox
+					x="118"
+					y="10"
+					prompt="user template"
+					width="300"
+					rowCount="10"
+					itemRenderer="nl.bs10.bright.views.renderers.TemplateDefRenderer"
+					change="typeChangeHandler(event)"
+					dataProvider="{Model.instance.templateVO.userDefinitions}"
+					toolTip="To create new content, first select the type of content you want to create"
+					labelField="templatename"
+					id="types_cmb" />
+				
+				<components:LabeledInput
+					x="10"
+					y="60"
+					width="90%"
+					label="Username:"
+					id="userlabel_txt"
+					text="{Model.instance.userVO.currentUser.label}" />
+				
+				<components:LabeledInput
+					x="10"
+					y="110"
+					width="90%"
+					label="E-mail:"
+					id="email_txt"
+					text="{Model.instance.userVO.currentUser.email}" />
+				
+				<components:LabeledInput
+					x="10"
+					y="160"
+					width="90%"
+					label="Password:"
+					id="password_txt"
+					text="{Model.instance.userVO.currentUser.password}" />
+
+				<mx:Label
+					text="Active:"
+					x="10"
+					y="211" />
+					
+				<mx:CheckBox 
+					x="115" 
+					y="208" 
+					id="activated_chb" 
+					selected="{Model.instance.userVO.currentUser.activated}"/>
+
+				<mx:Label
+					text="Deleted:"
+					x="10"
+					y="261" />
+					
+				<mx:CheckBox 
+					x="115" 
+					y="258" 
+					id="deleted_chb" 
+					selected="{Model.instance.userVO.currentUser.deleted !== null}"/>
+
+				<mx:Label
+					text="Usergroups:"
+					x="10"
+					y="314" />
+				
+				<mx:HBox
+					paddingBottom="20"
+					id="ug_hbox"
+					width="100%"
+					height="100%"
+					y="314"
+					x="115">
+					
+					<mx:VBox
+						width="100%"
+						height="100%"
+						id="ug_vbox1">
+						
+						<mx:CheckBox
+							label="Select all"
+							change="onSelectAll(event)"
+							paddingTop="15" />
+						
+					</mx:VBox>
+					
+					<mx:VBox
+						width="100%"
+						height="100%"
+						id="ug_vbox2">
+						
+					</mx:VBox>
+				</mx:HBox>
+					
+
+			</mx:Canvas>
+			
+		</mx:ViewStack>
+		
+</UserEditorView>

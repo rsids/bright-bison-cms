@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ElementView 
+	show="showHandler()"
+	creationComplete="elementview1_creationCompleteHandler(event)"
+	styleName="borderedBox"
+	xmlns="nl.bs10.bright.views.elements.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*" 
+	xmlns:components1="nl.bs10.bright.components.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.FlexEvent;
+			
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.brightlib.controllers.IconController;
+			import nl.bs10.brightlib.utils.Formatter;
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:VBox
+		id="dg_vbox"
+		borderColor="#929292"
+		borderStyle="solid"
+		styleName="border"
+		backgroundColor="#ffffff"
+		width="25%"
+		height="100%">
+		
+			
+		<mx:HBox
+			horizontalAlign="right"
+			verticalAlign="middle"
+			paddingRight="16"
+			visible="{Model.instance.elementVO.currentItem == null}"
+			includeInLayout="{Model.instance.elementVO.currentItem == null}"
+			horizontalScrollPolicy="off"
+			verticalScrollPolicy="off"
+			styleName="headerBar"
+			width="100%"
+			height="60">
+			
+			<mx:TextInput
+				keyUp="onFilterUp(event)"
+				id="filter_txt" />
+			
+		</mx:HBox>
+		
+		
+		<components1:LazyDataGrid
+			styleName="noborder"
+			width="100%" 
+			height="100%"
+			id="element_dg"
+			settingsname="element"
+			deleteItem="deleteElement()"
+			editItem="editElement()"
+			headerRelease="onHeaderRelease(event)"
+			bottomReached="onBottomReached(event)"
+			dataProvider="{Model.instance.elementVO.aelements}"
+			doubleClickEnabled="true"
+			doubleClick="editElement()" />
+		
+		<components:IconBox
+			bottom="0"
+			styleName="borderTop">
+			
+						
+			<components:GrayImageButton 
+				source="{IconController.getGray('add')}" 
+				toolTip="Add Element" 
+				click="addElement()" />
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('pencil')}" 
+				click="editElement()"
+				toolTip="Edit Element"
+				enabled="{element_dg.selectedItem}" />
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('trash')}" 
+				toolTip="Delete Element" 
+				click="deleteElement()"
+				enabled="{element_dg.selectedItem}" />
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('cog')}" 
+				toolTip="Change columns" 
+				click="editColumns()" />
+		</components:IconBox>
+	
+	</mx:VBox>
+	
+	<ElementEditorViewLayout
+		id="elementEditorView"
+		visible="{Model.instance.elementVO.currentItem != null}"
+		includeInLayout="{Model.instance.elementVO.currentItem != null}"
+		contentVO="{Model.instance.elementVO}"
+		width="100%"
+		height="100%" />
+	
+</ElementView>

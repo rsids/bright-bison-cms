@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CalendarView 
+	show="showHandler()"
+	creationComplete="calendarview1_creationCompleteHandler(event)"
+	styleName="borderedBox"
+	xmlns="nl.bs10.bright.views.calendar.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*" 
+	xmlns:cal="com.hevery.cal.*" 
+	xmlns:components1="nl.bs10.bright.components.*" >
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.events.DataGridEvent;
+			import mx.events.DropdownEvent;
+			
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.brightlib.controllers.IconController;
+			import nl.bs10.brightlib.utils.Formatter;
+			
+		]]>
+	</mx:Script>
+	
+	<mx:VBox
+		id="dg_vbox"
+		borderColor="#929292"
+		borderStyle="solid"
+		styleName="border"
+		backgroundColor="#ffffff"
+		width="25%"
+		height="100%">
+			
+		<mx:Canvas
+			width="100%" 
+			height="100%">
+			
+			<mx:Canvas
+				height="60"
+				horizontalScrollPolicy="off"
+				verticalScrollPolicy="off"
+				styleName="headerBar"
+				width="100%">
+				
+				<mx:TabBar
+					x="44"
+					bottom="0"
+					selectedIndex="{displayMode}"
+					visible="{Model.instance.calendarVO.currentItem == null}"
+					includeInLayout="{Model.instance.calendarVO.currentItem == null}"
+					dataProvider="{['List', 'Week','Month']}"
+					itemClick="setViewStack(event)"
+					id="cal_tb" />
+				
+				<mx:HBox
+					right="0"
+					verticalAlign="middle"
+					paddingRight="16"
+					height="60">
+					
+					<components:BrightDateField
+						width="150"
+						open="onStartDateOpen(event)"
+						change="onStartDateChange(event)"
+						visible="{Model.instance.calendarVO.currentItem == null &amp;&amp; displayMode == 0}"
+						includeInLayout="{Model.instance.calendarVO.currentItem == null &amp;&amp; displayMode == 0}"
+						id="calStartDs" />
+					
+					<components:BrightDateField
+						width="150"
+						open="onEndDateOpen(event)"
+						change="onEndDateChange(event)"
+						visible="{Model.instance.calendarVO.currentItem == null &amp;&amp; displayMode == 0}"
+						includeInLayout="{Model.instance.calendarVO.currentItem == null &amp;&amp; displayMode == 0}"
+						id="calEndDs" />
+					
+					
+					<mx:Canvas
+						visible="{Model.instance.calendarVO.currentItem == null}"
+						includeInLayout="{Model.instance.calendarVO.currentItem == null}">
+						
+						<mx:TextInput
+							keyUp="onFilterUp(event)"
+							id="filter_txt" />
+						
+						<mx:ProgressBar 
+							indeterminate="true" 
+							top="{filter_txt.height}"
+							includeInLayout="false"
+							visible="{Model.instance.applicationVO.isLoading}"
+							label="" 
+							width="100%"
+							right="0" />
+						
+					</mx:Canvas>
+					
+					<components:BrightDateField
+						width="150"
+						change="onSelectedMonthChange(event)"
+						visible="{Model.instance.calendarVO.currentItem == null &amp;&amp; displayMode != 0}"
+						includeInLayout="{Model.instance.calendarVO.currentItem == null &amp;&amp; displayMode != 0}"
+						selectedDate="{Model.instance.calendarVO.selectedDate}"
+						id="cal_ds" />
+					
+				</mx:HBox>
+				
+			</mx:Canvas>
+			
+			<mx:ViewStack
+				top="60"
+				bottom="0"
+				id="cal_vs"
+				creationPolicy="all"
+				selectedIndex="{displayMode}"
+				width="100%" >
+				
+				<mx:Canvas
+					width="100%" 
+					height="100%">
+					<!-- Datagrid needs a canvas because the children of a viewstack need to be a container :-S -->
+					<components1:LazyDataGrid
+						settingsname="calendar"
+						styleName="noborder"
+						headerRelease="onHeaderRelease(event)"
+						bottomReached="onBottomReached(event)"
+						width="100%" 
+						height="100%"
+						id="calendar_dg"
+						deleteItem="deleteEvent()"
+						editItem="editEvent()"
+						selectedIndex="{displayMode}"
+						dataProvider="{Model.instance.calendarVO.aevents}"
+						allowMultipleSelection="true"
+						doubleClickEnabled="true"
+						doubleClick="editEvent()">
+						
+					</components1:LazyDataGrid>
+					
+				</mx:Canvas>
+				
+				<cal:WeekView width="100%" height="100%"
+					label="Week"
+					hourHeight="{(cal_vs.height-18) / 24}"
+					id="weekview"
+					use24HourClock="true"
+					date="{cal_ds.selectedDate}"
+					calendarDescriptor="{calDescriptor}"
+					events="{Model.instance.calendarVO.calendarEvents}"
+					calendars="{Model.instance.calendarVO.acalendars}"
+					click="onCalendarClick(event)"/>
+				
+				<cal:MonthView 
+					width="100%" 
+					height="100%"
+					label="Month"
+					date="{cal_ds.selectedDate}"
+				   	calendarDescriptor="{calDescriptor}"
+				   	events="{Model.instance.calendarVO.calendarEvents}"
+				   	calendars="{Model.instance.calendarVO.acalendars}"
+				   	click="onCalendarClick(event)"/>
+				
+			</mx:ViewStack>
+				
+		</mx:Canvas>
+		
+		<components:IconBox
+			bottom="0"
+			styleName="borderTop">
+				
+			<components:GrayImageButton 
+				source="{IconController.getGray('add')}" 
+				toolTip="Add Event" 
+				click="addEvent()" />
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('pencil')}" 
+				click="editEvent()"
+				toolTip="Edit Event"
+				enabled="{calendar_dg.selectedItem}" />
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('trash')}" 
+				toolTip="Delete Event(s)" 
+				click="deleteEvent()"
+				enabled="{calendar_dg.selectedItem}" />
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('cog')}" 
+				toolTip="Change columns" 
+				click="editColumns()" />
+			
+		</components:IconBox>
+	
+	</mx:VBox>
+	
+	<CalendarEditorViewLayout
+		id="calendarEditorView"
+		visible="{Model.instance.calendarVO.currentItem != null}"
+		includeInLayout="{Model.instance.calendarVO.currentItem != null}"
+		contentVO="{Model.instance.calendarVO}"
+		width="100%"
+		height="100%" />
+	
+</CalendarView>

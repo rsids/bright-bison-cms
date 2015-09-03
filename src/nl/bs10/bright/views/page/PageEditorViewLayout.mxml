@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PageEditorView 
+	styleName="borderedBox"
+	width="100%"
+	height="100%"
+	horizontalScrollPolicy="off"
+	xmlns="nl.bs10.bright.views.page.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.brightlib.controllers.IconController;
+			import nl.bs10.bright.model.Model;
+			import mx.managers.PopUpManager;
+		]]>
+	</mx:Script>
+	
+		<mx:Canvas
+			height="104"
+			horizontalScrollPolicy="off"
+			verticalScrollPolicy="off"
+			styleName="headerBar"
+			width="100%">
+			
+			<components:ShadowedLabel
+				y="16"
+				x="44"
+				styleName="h2"
+				text="{contentVO.currentItem.label}" />
+				
+			<mx:HBox
+				y="16"
+				right="16">
+		
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					click="cancel()"
+					label="Cancel" />
+			
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					visible="{contentVO.currentItem.pageId != 0}"
+					includeInLayout="{contentVO.currentItem.pageId != 0}"
+					click="saveas()"
+					label="Save As" />
+					
+				<mx:Button
+					enabled="{!Model.instance.applicationVO.commandExecuting}"
+					click="save()"
+					label="Save" />
+				
+			</mx:HBox>
+			
+			<mx:TabBar
+				x="44"
+				bottom="0"
+				labelField="label"
+				dataProvider="{Model.instance.pageVO.tabs}"
+				itemClick="setViewStack(event)"
+				id="lang_tb" />
+			
+		</mx:Canvas>
+		
+		<mx:ViewStack
+			id="item_vs"
+			styleName="editorVs"
+			width="100%"
+			height="100%">
+			
+			<mx:Canvas
+				width="100%"
+				height="100%">
+				
+				<mx:Label
+					x="43"
+					y="32"
+					text="Select template:" />
+				
+				<mx:ComboBox
+					x="160"
+					y="28"
+					prompt="page template"
+					width="300"
+					rowCount="10"
+					itemRenderer="nl.bs10.bright.views.renderers.TemplateDefRenderer"
+					change="typeChangeHandler(event)"
+					dataProvider="{Model.instance.templateVO.templateDefinitions}"
+					toolTip="To create new content, first select the type of content you want to create"
+					labelField="templatename"
+					id="types_cmb" />
+						
+				<mx:Label
+					y="82"
+					x="43"
+					text="Label:" />
+					
+				<mx:Image
+					x="140"
+					y="79"
+					visible="{!label_txt.enabled}"
+					source="{IconController.getIcon('lock')}" />
+							
+				<mx:TextInput
+					y="78"
+					left="160"
+					right="20"
+					text="{contentVO.currentItem.label}"
+					focusOut="updateLabel()"
+					id="label_txt" />
+							
+				<mx:Label
+					x="43"
+					y="132"
+					text="Published from:" />
+					
+				<components:BrightDateField
+					x="160"
+					y="128"
+					change="setDate('publicationdate')"
+					selectedDate="{contentVO.currentItem.flpublicationdate}"
+					disabledRanges="{[{rangeStart:expdate_df.selectedDate}]}"
+					width="100"
+					id="pubdate_df" />
+					
+				<mx:Label
+					x="270"
+					y="132"
+					text="To:" />
+					
+				<components:BrightDateField
+					x="300"
+					y="128"
+					change="setDate('expirationdate')"
+					selectedDate="{contentVO.currentItem.flexpirationdate}"
+					disabledRanges="{[{rangeEnd:pubdate_df.selectedDate}]}"
+					width="100"
+					id="expdate_df" />
+					
+				<mx:CheckBox
+					x="420"
+					y="128"
+					id="allways_chb"
+					change="allwayspublishedChanged(allways_chb.selected)"
+					selected="{contentVO.currentItem.allwayspublished}"
+					label="Always published" />
+				
+				<mx:CheckBox
+					x="160"
+					y="178"
+					id="showinnav_chb"
+					change="showinnavChanged(showinnav_chb.selected)"
+					selected="{contentVO.currentItem.showinnavigation}"
+					label="Show in navigation" />
+					
+			</mx:Canvas>
+			
+		</mx:ViewStack>
+		
+</PageEditorView>

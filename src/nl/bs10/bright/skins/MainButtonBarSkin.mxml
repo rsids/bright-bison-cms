@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<degrafa:GraphicRectangularBorderSkin
+	width="400" 
+	height="300" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:degrafa="http://www.degrafa.com/2007"
+	xmlns:geometry="com.degrafa.geometry.*">
+	
+	<mx:Script>
+		<![CDATA[
+			[Bindable] private var _skinWidth:Number = 0;
+			
+			[Bindable] private var _skinHeight:Number = 0;
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void {
+				
+				_skinWidth = unscaledWidth;
+				_skinHeight = 30;
+				y = -2;
+				super.updateDisplayList(unscaledWidth, 30);
+			}
+		]]>
+	</mx:Script>
+	
+	<degrafa:fills>
+		
+		<degrafa:SolidFill id="bg_gradient" color="#ffffff" alpha="0" />
+		
+		<degrafa:LinearGradientFill angle="90" id="bg_active">
+			<degrafa:GradientStop ratio="0" color="#ffffff" alpha="1" />
+			<degrafa:GradientStop ratio="1" color="#ffffff" alpha=".5" />
+		</degrafa:LinearGradientFill>
+		
+		<degrafa:LinearGradientFill angle="90" id="bg_disabled">
+			<degrafa:GradientStop ratio="0" color="#BDC7D7" alpha="1" />
+			<degrafa:GradientStop ratio="1" color="#C9DAE4" alpha="1" />
+		</degrafa:LinearGradientFill>
+		
+	</degrafa:fills>
+	
+	<degrafa:strokes>
+
+		<degrafa:SolidStroke
+			color="#000000"
+			id="underStroke" 
+			weight="2" />
+	
+	</degrafa:strokes>
+	
+	<degrafa:geometry>
+		
+		<degrafa:RoundedRectangle
+			id="rect"
+			width="{_skinWidth}"
+			height="{_skinHeight}"
+			cornerRadius="1"
+			fill="{bg_gradient}" />
+			
+		<geometry:Line
+			x="0"
+			x1="{_skinWidth}"
+			y="{_skinHeight}"
+			y1="{_skinHeight}"
+			id="underLine"
+			stroke="{underStroke}" />
+			
+			
+	</degrafa:geometry>
+	
+	<degrafa:states>
+		
+		<degrafa:State name="selectedUpSkin">
+			<degrafa:SetProperty target="{rect}" name="fill" value="{bg_active}"/>
+			<degrafa:SetProperty target="{underLine}" name="visible" value="false"/>
+		</degrafa:State>
+		
+		<degrafa:State name="selectedOverSkin">
+			<degrafa:SetProperty target="{underLine}" name="visible" value="true"/>
+			<degrafa:SetProperty target="{rect}" name="fill" value="{bg_active}"/>
+		</degrafa:State>
+		
+		<degrafa:State name="overSkin">
+			<degrafa:SetProperty target="{underLine}" name="visible" value="true"/>
+		</degrafa:State>
+		
+		<degrafa:State name="upSkin">
+			<degrafa:SetProperty target="{underLine}" name="visible" value="false"/>
+		</degrafa:State>
+		
+		<degrafa:State name="downSkin">
+			<degrafa:SetProperty target="{underLine}" name="visible" value="false"/>
+		</degrafa:State>
+		
+		<degrafa:State name="disabledSkin">
+			<degrafa:SetProperty target="{underLine}" name="visible" value="false"/>
+			<degrafa:SetProperty target="{rect}" name="fill" value="{bg_disabled}"/>
+		</degrafa:State>
+		
+    </degrafa:states>
+
+	
+</degrafa:GraphicRectangularBorderSkin>

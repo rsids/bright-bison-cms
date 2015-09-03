@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LayerEditorView 
+	xmlns="nl.bs10.bright.views.maps.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	showCloseButton="true"
+	close="close()"
+	title="Enter layername"
+	layout="vertical"
+	width="400">
+	<mx:Label
+		text="Please enter the name of the layer:" />
+		
+	<mx:VBox
+		id="lang_vb"
+		width="100%">
+		
+	</mx:VBox>
+	
+	<mx:HBox
+		width="100%">
+		
+		<mx:Label
+			text="Color"
+			width="100" />
+			
+		<mx:ColorPicker
+			id="color_cp" />
+			
+	</mx:HBox>
+	
+	<mx:HBox
+		width="100%"
+		horizontalAlign="right">
+		
+		<mx:Button
+			click="close()"
+			label="Cancel" />
+		
+		<mx:Button
+			click="save()"
+			label="Save" />
+		
+	</mx:HBox>
+</LayerEditorView>

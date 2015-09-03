@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserGroupsView 
+	xmlns="nl.bs10.bright.views.users.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	showCloseButton="true"
+	close="close()"
+	title="Manage Usergroups"
+	layout="vertical"
+	verticalGap="0" 
+	width="250" 
+	height="300" 
+	xmlns:components="nl.bs10.brightlib.components.*">
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.brightlib.controllers.IconController;
+			import nl.bs10.bright.model.Model;
+		]]>
+	</mx:Script>
+	
+	<mx:DataGrid
+		width="100%"
+		height="100%"
+		id="groups_lst"
+		styleName="border"
+		dataProvider="{Model.instance.userVO.usergroups}">
+		
+		<mx:columns>
+			
+			<mx:DataGridColumn
+				dataField="groupId"
+				headerText="id"
+				width="20"
+				resizable="false" />
+			
+			<mx:DataGridColumn
+				headerText="Groupname"
+				dataField="groupname"
+				resizable="false" />
+			
+		</mx:columns>
+	</mx:DataGrid>
+		
+	<components:IconBox
+		bottom="0"
+		borderSides="right,bottom,left">
+		
+		<components:GrayImageButton 
+			source="{IconController.getGray('add')}" 
+			toolTip="Add Group" 
+			click="addGroup()" />
+		
+		<components:GrayImageButton 
+			source="{IconController.getGray('trash')}" 
+			toolTip="Delete Group" 
+			click="deleteGroup(groups_lst.selectedItem)"
+			enabled="{groups_lst.selectedItem}" />
+				
+	</components:IconBox>
+	
+</UserGroupsView>

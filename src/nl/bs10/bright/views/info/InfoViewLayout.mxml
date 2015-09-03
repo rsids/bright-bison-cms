@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<InfoView 
+	styleName="borderedBox"
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns="nl.bs10.bright.views.info.*" 
+	xmlns:components="nl.bs10.brightlib.components.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import flash.net.navigateToURL;
+			
+			import mx.containers.VBox;
+			
+			import nl.bs10.bright.Version;
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.bright.model.vo.ApplicationVO;
+			import nl.bs10.brightlib.utils.Formatter;
+			
+			private var _errorGenerator:VBox;
+		]]>
+	</mx:Script>
+	
+	<mx:Canvas
+		height="60"
+		horizontalScrollPolicy="off"
+		verticalScrollPolicy="off"
+		styleName="headerBar"
+		width="100%">
+		
+		<components:ShadowedLabel
+			y="16"
+			x="44"
+			styleName="h2"
+			text="Information / About" />
+		
+	</mx:Canvas>
+	<!-- For testing purposes, should trigger the global errorhandler -->
+	<mx:Label click="throw new Error('boink')" text="{'Bright Version: ' + Version.VERSION + ' compiled against library ' + nl.bs10.brightlib.utils.Version.LIBRARY_VERSION}" />
+
+	<mx:Label
+		useHandCursor="true"
+		buttonMode="true"
+		mouseChildren="false"
+		click="navigateToURL(new URLRequest('http://www.wewantfur.com'), '_blank')" 
+		text="{ApplicationVO.COPYRIGHT}" />
+	
+	<mx:Label text="Installed plugins: " />
+	
+	<mx:DataGrid
+		width="450"
+		height="100%"
+		dataProvider="{Model.instance.templateVO.pluginProperties}"
+		editable="false">
+		
+		<mx:columns>
+			<mx:DataGridColumn
+				headerText="Plugin name"
+				width="200"
+				resizable="false"
+				dataField="pluginname" />
+			
+			<mx:DataGridColumn
+				headerText="Version"
+				resizable="false"
+				width="65"
+				dataField="version" />
+			
+			<mx:DataGridColumn
+				headerText="Date"
+				resizable="false"
+				labelFunction="Formatter.formatDate"
+				dataField="modificationdate" />
+		</mx:columns>
+		
+	</mx:DataGrid>
+	
+</InfoView>

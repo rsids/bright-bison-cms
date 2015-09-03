@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MailView 
+	show="showHandler()"
+	styleName="borderedBox"
+	xmlns="nl.bs10.bright.views.mail.*" 
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:components="nl.bs10.brightlib.components.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.model.Model;
+			import nl.bs10.brightlib.utils.Formatter;
+			import nl.bs10.brightlib.controllers.IconController;
+		]]>
+	</mx:Script>
+	
+	<mx:VBox
+		id="dg_vbox"
+		borderColor="#929292"
+		borderStyle="solid"
+		styleName="border"
+		backgroundColor="#ffffff"
+		width="25%"
+		height="100%">
+		
+		<mx:DataGrid
+			styleName="noborder"
+			width="100%" 
+			height="100%"
+			id="mails_dg"
+			dataProvider="{Model.instance.mailingVO.amailings}"
+			doubleClickEnabled="true"
+			doubleClick="editMail()">
+			
+			<mx:columns>
+				<mx:DataGridColumn
+					sortCompareFunction="sortByType"
+					editable="false"
+					itemRenderer="nl.bs10.brightlib.components.renderers.IconRenderer"
+					dataField="itemType"
+					width="22"
+					headerText="" />
+			
+				<mx:DataGridColumn
+					editable="false"
+					headerText="Label"
+					dataField="label" />
+			
+				<mx:DataGridColumn
+					editable="false"
+					headerText="Last Modified"
+					width="110"
+					labelFunction="Formatter.formatDate"
+					dataField="flmodificationdate" />
+				
+			</mx:columns>
+			
+		</mx:DataGrid>
+		
+		<components:IconBox
+			bottom="0"
+			styleName="borderTop">
+				
+			<components:GrayImageButton 
+				source="{IconController.getGray('add')}" 
+				toolTip="Add Mailing" 
+				click="addMail()" />
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('pencil')}" 
+				click="editMail()"
+				toolTip="Edit Mailing"
+				enabled="{mails_dg.selectedItem}" />
+			
+			<components:GrayImageButton 
+				source="{IconController.getGray('trash')}" 
+				toolTip="Delete Mailing" 
+				click="deleteMail()"
+				enabled="{mails_dg.selectedItem}" />
+		</components:IconBox>
+	
+	</mx:VBox>
+	
+	<MailEditorViewLayout
+		id="mailEditorView"
+		visible="{Model.instance.mailingVO.currentItem != null}"
+		includeInLayout="{Model.instance.mailingVO.currentItem != null}"
+		contentVO="{Model.instance.mailingVO}"
+		width="100%"
+		height="100%"  />
+	
+</MailView>

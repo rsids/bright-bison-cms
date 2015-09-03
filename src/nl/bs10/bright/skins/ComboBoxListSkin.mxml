@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicRectangularBorderSkin
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns="http://www.degrafa.com/2007"
+	xmlns:geometry="com.degrafa.geometry.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import nl.bs10.bright.skins.palettes.Palette;
+			
+		]]>
+	</mx:Script>
+	
+	<fills>
+		<SolidFill color="#f4f4f4" id="list_bg" />
+		<SolidFill color="#5f83b9" id="list_over_bg" />
+		<SolidFill color="#f4f4f4" id="list_down_bg" />
+	</fills>
+	
+	<geometry>
+		
+		<RegularRectangle
+			fill="{list_bg}"
+			id="rect"
+			width="{skinWidth}"
+			height="{skinHeight}"/>
+		
+	</geometry>
+	
+	<State name="overSkin">
+		<SetProperty target="{rect}" name="fill" value="{list_over_bg}"/>
+	</State>
+
+	<State name="downSkin">
+		<SetProperty target="{rect}" name="fill" value="{list_down_bg}"/>
+	</State>
+</GraphicRectangularBorderSkin>
