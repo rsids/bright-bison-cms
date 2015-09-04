@@ -140,9 +140,9 @@
 				<mx:CheckBox
 					x="420"
 					y="128"
-					id="allways_chb"
-					change="allwayspublishedChanged(allways_chb.selected)"
-					selected="{contentVO.currentItem.allwayspublished}"
+					id="always_chb"
+					change="alwayspublishedChanged(always_chb.selected)"
+					selected="{contentVO.currentItem.alwayspublished}"
 					label="Always published" />
 							
 				

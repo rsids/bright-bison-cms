@@ -66,7 +66,7 @@ package nl.bs10.bright.views.content {
 		[Bindable] public var pubdate_df:BrightDateField;
 		[Bindable] public var expdate_df:BrightDateField;
 		[Bindable] public var showinnav_chb:CheckBox;
-		[Bindable] public var allways_chb:CheckBox;
+		[Bindable] public var always_chb:CheckBox;
 		
 		[Bindable(event="contentVOChanged")]
 		public function set contentVO(value:IContentVO):void {
@@ -148,8 +148,8 @@ package nl.bs10.bright.views.content {
 				(_contentVO.currentItem as Page).flexpirationdate = expdate_df.selectedDate; 
 		}
 		
-		protected function allwayspublishedChanged(value:Boolean):void {
-			_contentVO.currentItem.allwayspublished = value;
+		protected function alwayspublishedChanged(value:Boolean):void {
+			_contentVO.currentItem.alwayspublished = value;
 		}
 		protected function showinnavChanged(value:Boolean):void {
 			_contentVO.currentItem.showinnavigation = value;
@@ -241,7 +241,7 @@ package nl.bs10.bright.views.content {
 				
 				if(showinnav_chb) {
 					showinnav_chb.selected = _contentVO.currentItem.showinnavigation;
-					allways_chb.selected = _contentVO.currentItem.allwayspublished;
+					always_chb.selected = _contentVO.currentItem.alwayspublished;
 				}
 				
 				if(_contentVO.currentItem.pageId > 0) {

@@ -107,7 +107,7 @@ package nl.bs10.bright.views.renderers
 			var d3:Date = new Date();
 			
 			if(data.page) {
-				if(data.page.allwayspublished || (d1.getTime() <= d3.getTime() && d2.getTime() >= d3.getTime())) {
+				if(data.page.alwayspublished || (d1.getTime() <= d3.getTime() && d2.getTime() >= d3.getTime())) {
 					setStyle('color', 0x000000); 
 					icon_img.alpha = 1;
 				} else {
