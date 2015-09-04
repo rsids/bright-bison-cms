@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mxmlc src/bright_cms.mxml -load-config+=config.xml -output bin/bright_cms.swf
