@@ -88,6 +88,9 @@ package nl.bs10.bright.views.calendar {
 						
 						
 						if(endrepeat_df.selectedDate) {
+                            endrepeat_df.selectedDate.setHours(23);
+                            endrepeat_df.selectedDate.setMinutes(59);
+                            endrepeat_df.selectedDate.setSeconds(59);
 							var df:DateFormatter = new DateFormatter();
 							df.formatString ='YYYYMMDDTJNNSSZ'; 
 									//Ymd\THis';
