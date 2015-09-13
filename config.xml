@@ -20,7 +20,7 @@
         <context-root>context-path</context-root>
         -->
         <!-- compiler.debug: generates a movie that is suitable for debugging-->
-        <debug>true</debug>
+        <debug>false</debug>
         <!-- compiler.defaults-css-files usage:
         <defaults-css-files>
            <filename>string</filename>

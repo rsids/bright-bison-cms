@@ -1,2 +1,7 @@
 .idea
 bin
+/.settings
+/html-template
+/.project
+/.flexProperties
+/.actionScriptProperties
