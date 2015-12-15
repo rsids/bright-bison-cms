@@ -5,6 +5,7 @@ package nl.bs10.bright.commands.page {
 	
 	import nl.bs10.bright.commands.BrightCommand;
 	import nl.bs10.bright.model.Model;
+	import nl.bs10.bright.utils.Log;
 	import nl.fur.vein.commands.IAsyncCommand;
 	import nl.fur.vein.commands.ICommand;
 	import nl.fur.vein.controllers.ServiceController;
@@ -15,6 +16,8 @@ package nl.bs10.bright.commands.page {
 			super.execute(args);
 			var service:String = "pageService";
 			var id:String = 'pageId';
+			
+			// Calendars have their own set of labels
 			if(args[0][1] == 'calendar') {
 				service = 'calendarService';
 				id = 'calendarId';	
@@ -27,8 +30,11 @@ package nl.bs10.bright.commands.page {
 		
 		override public function resultHandler(event:Event):void {
 			var result:ResultEvent = event as ResultEvent;
-			if(result.token.current.currentItem)
+			if(result.token.current.currentItem) {
 				result.token.current.currentItem.label = result.result as String;
+			}
+			
+			Log.add("Label updated to " + (result.result as String));
 				
 			super.resultHandler(event);
 		}

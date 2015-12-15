@@ -15,6 +15,7 @@ package nl.bs10.bright.views.maps
 	
 	import nl.bs10.bright.commands.maps.GeocodeCommand;
 	import nl.bs10.bright.model.Model;
+	import nl.bs10.bright.utils.Log;
 	import nl.bs10.bright.views.content.ItemEditorView;
 	import nl.bs10.bright.views.files.FilePopupView;
 	import nl.bs10.brightlib.controllers.IconController;
@@ -102,6 +103,7 @@ package nl.bs10.bright.views.maps
 			MarkerPage(contentVO.currentItem).enabled = enabled_chb.selected;
 			MarkerPage(contentVO.currentItem).iconsize = iconsize_hs.value;
 			
+			Log.add("Marker is about to save");
 			super.save(callcancel, error);
 		}
 		

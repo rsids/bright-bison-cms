@@ -4,7 +4,6 @@ package nl.bs10.bright.model.vo {
 	import flash.events.IEventDispatcher;
 	
 	import mx.collections.ArrayCollection;
-	
 	import nl.fur.vein.events.VeinDispatcher;
 	
 	public class MapsVO extends EventDispatcher {

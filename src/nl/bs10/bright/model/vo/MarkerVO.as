@@ -86,6 +86,7 @@ package nl.bs10.bright.model.vo {
 			for each(var co:IPage in markers) {
 				arr.push(co);
 			}
+			
 			var s:Sort = amarkers.sort;
 			amarkers = new ArrayCollection(arr);
 			amarkers.sort = s;

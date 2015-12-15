@@ -8,7 +8,6 @@ package nl.bs10.bright.model.vo {
 	import nl.bs10.bright.commands.maps.SetPolyCommand;
 	import nl.bs10.brightlib.interfaces.IContentVO;
 	import nl.bs10.brightlib.interfaces.IPage;
-	import nl.bs10.brightlib.objects.Layer;
 	import nl.bs10.brightlib.objects.PolyPage;
 	import nl.fur.vein.controllers.CommandController;
 	

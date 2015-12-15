@@ -39,8 +39,9 @@ package nl.bs10.bright.commands.maps {
 			var arr2:Array = [];
 			// Need to loop over to remove gaps, since arr is id based
 			for each(var item:IPage in arr) {
-				if(item)
+				if(item) {
 					arr2.push(item);
+				}
 			}
 			Model.instance.mapsVO.items = new ArrayCollection(arr2);
 			super.resultHandler(event);

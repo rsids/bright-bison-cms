@@ -136,16 +136,18 @@ package nl.bs10.bright.views.content {
 		
 		protected function updateLabel():void {
 			_contentVO.currentItem.label = label_txt.text;
-			if(StringUtil.trim(label_txt.text) != '') 
+			if(StringUtil.trim(label_txt.text) != '') {
 				CommandController.addToQueue(new GenerateLabelCommand(), _contentVO, _type);
+			}
 		}		
 		
 		
 		protected function setDate(date:String):void {
-			if(date == "publicationdate")
-				(_contentVO.currentItem as Page).flpublicationdate = pubdate_df.selectedDate; 
-			if(date == "expirationdate")
-				(_contentVO.currentItem as Page).flexpirationdate = expdate_df.selectedDate; 
+			if(date == "publicationdate") {
+				(_contentVO.currentItem as Page).flpublicationdate = pubdate_df.selectedDate;
+			} else if(date == "expirationdate") {
+				(_contentVO.currentItem as Page).flexpirationdate = expdate_df.selectedDate;
+			}
 		}
 		
 		protected function alwayspublishedChanged(value:Boolean):void {
@@ -156,10 +158,11 @@ package nl.bs10.bright.views.content {
 		}
 		
 		protected function save(callcancel:Boolean = true, error:Array = null):void {
-			var fn:Function = (callcancel) ? cancel : null;
+			var fn:Function = callcancel ? cancel : null;
 			
-			if(!error)
+			if(!error) {
 				error = new Array();
+			}
 			
 			error = processContent(error);
 			
