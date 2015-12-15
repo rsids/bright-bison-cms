@@ -56,6 +56,8 @@ package nl.bs10.bright.model.vo {
 		private var _langs:Array;
 		private var _localizablefields:Object;
 		
+		private var _log:String = "";
+		
 		[Bindable]
 		public var navitems:ArrayCollection = new ArrayCollection();
 		
@@ -283,6 +285,20 @@ package nl.bs10.bright.model.vo {
 		
 		public function localizablefieldsChanged():void {
 			dispatchEvent(new Event("localizablefieldsChanged"));
+		}
+		
+		public function get log():String
+		{
+			return _log;
+		}
+		
+		[Bindable(event="logChanged")]
+		public function set log(value:String):void
+		{
+			if(value !== _log) {
+				_log = value;
+				dispatchEvent(new Event("logChanged"));	
+			}
 		}
 
 		

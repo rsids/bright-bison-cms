@@ -46,32 +46,47 @@
 	
 	<mx:Label text="Installed plugins: " />
 	
-	<mx:DataGrid
-		width="450"
-		height="100%"
-		dataProvider="{Model.instance.templateVO.pluginProperties}"
-		editable="false">
+	<mx:HBox
+		width="100%"
+		height="100%">
 		
-		<mx:columns>
-			<mx:DataGridColumn
-				headerText="Plugin name"
-				width="200"
-				resizable="false"
-				dataField="pluginname" />
+		<mx:DataGrid
+			width="50%"
+			height="100%"
+			dataProvider="{Model.instance.templateVO.pluginProperties}"
+			editable="false">
 			
-			<mx:DataGridColumn
-				headerText="Version"
-				resizable="false"
-				width="65"
-				dataField="version" />
+			<mx:columns>
+				<mx:DataGridColumn
+					headerText="Plugin name"
+					width="200"
+					resizable="false"
+					dataField="pluginname" />
+				
+				<mx:DataGridColumn
+					headerText="Version"
+					resizable="false"
+					width="65"
+					dataField="version" />
+				
+				<mx:DataGridColumn
+					headerText="Date"
+					resizable="false"
+					labelFunction="Formatter.formatDate"
+					dataField="modificationdate" />
+			</mx:columns>
 			
-			<mx:DataGridColumn
-				headerText="Date"
-				resizable="false"
-				labelFunction="Formatter.formatDate"
-				dataField="modificationdate" />
-		</mx:columns>
+		</mx:DataGrid>
 		
-	</mx:DataGrid>
+		<mx:TextArea
+			width="100%"
+			height="100%" 
+			text="{Model.instance.applicationVO.log}">
+			
+		</mx:TextArea>
+		
+	</mx:HBox>
+	
+	
 	
 </InfoView>
