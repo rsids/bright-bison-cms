@@ -87,6 +87,7 @@
 							
 							<mx:TextInput
 								text="{contentVO.currentItem.label}"
+								focusOut="updateLabel()"
 								id="label_txt" />
 						</mx:GridItem>
 						

@@ -1,6 +1,6 @@
 package nl.bs10.bright {
 	
 	public class Version {
-		public static const VERSION:String = "3.23 build 7642";
+		public static const VERSION:String = "3.24 build 7643";
 	}
 }

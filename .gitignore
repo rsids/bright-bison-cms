@@ -1,5 +1,6 @@
 .idea
 bin
+bin-debug
 /.settings
 /html-template
 /.project
